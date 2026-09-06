@@ -1,0 +1,29 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.example
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies (already in root)
+node_modules/
+
+# Logs
+*.log
+logs/

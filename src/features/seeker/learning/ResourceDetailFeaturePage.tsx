@@ -1,0 +1,1 @@
+import React from 'react';import { ResourceDetailPage } from '../../../components/learning/pages/ResourceDetailPage';export default function ResourceDetailFeaturePage() {  return (    <div className="animate-in fade-in duration-500">      <ResourceDetailPage />    </div>  );}

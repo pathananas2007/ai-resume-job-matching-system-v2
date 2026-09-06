@@ -1,0 +1,6 @@
+{
+  "name": "MatchPoint AI",
+  "description": "An intelligent hiring assistant that maps resume skills to job requirements, identifies gaps, and ranks candidates using Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

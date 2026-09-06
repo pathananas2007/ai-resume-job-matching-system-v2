@@ -1,0 +1,1 @@
+import React from 'react';import { LearningHubPage } from '../../../components/learning';export default function LearningPage() {  return (    <div className="animate-fade-in">      <LearningHubPage />    </div>  );}

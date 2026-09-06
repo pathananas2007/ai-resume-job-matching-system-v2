@@ -1,0 +1,1 @@
+#!/usr/bin/env pythonfrom fastapi.testclient import TestClientfrom main import appclient = TestClient(app)# Test if Google OAuth authorize endpoint is accessibleresponse = client.get("/api/v1/auth/oauth/google/authorize")print(f"Status Code: {response.status_code}")print(f"Response: {response.text}")

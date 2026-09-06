@@ -1,0 +1,1 @@
+from .base import BaseDocumentModelclass LearningProgressModel(BaseDocumentModel):    pass

@@ -1,0 +1,1 @@
+import pytestimport sysimport osif __name__ == '__main__':    # run pytest programmatically    sys.exit(pytest.main(["-q"]))
