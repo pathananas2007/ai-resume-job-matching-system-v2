@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { Play } from "lucide-react";
@@ -38,7 +38,7 @@ export function ResourceCard({
         {" "}
         <div className="mb-4 flex items-start justify-between">
           {" "}
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded bg-blue-50 text-[#1e3a8a] dark:bg-blue-900/20 dark:text-blue-400">
             {" "}
             <span className="text-xl leading-none">
               {" "}
@@ -71,7 +71,7 @@ export function ResourceCard({
           </div>{" "}
         </div>{" "}
         {resource.category && (
-          <p className="mb-1 text-xs font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
+          <p className="mb-1 text-xs font-bold tracking-widest text-[#1e3a8a] uppercase dark:text-blue-400">
             {" "}
             {resource.category}{" "}
           </p>

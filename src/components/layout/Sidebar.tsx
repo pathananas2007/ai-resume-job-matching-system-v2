@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -187,7 +187,7 @@ function SidebarContent({
       {/* Collapse toggle */}{" "}
       <button
         onClick={() => onCollapse(!collapsed)}
-        className="hidden lg:flex items-center justify-center h-10 border-t border-[#E2E8F0]                   text-[#94A3B8] hover:text-[#2563EB] hover:bg-[#F5F7FA] transition-colors"
+        className="hidden lg:flex items-center justify-center h-10 border-t border-[#E2E8F0]                   text-[#94A3B8] hover:text-[#0d1b2a] hover:bg-[#F5F7FA] transition-colors"
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {" "}

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Loader2 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
@@ -13,7 +13,7 @@ export function ProgressCard({
   value,
   max = 100,
   label,
-  color = "#2563EB",
+  color = "#0d1b2a",
   loading,
   className,
 }: ProgressProps) {

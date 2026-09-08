@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Sparkles, AlertCircle, ArrowUpCircle } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
@@ -23,7 +23,7 @@ const priorityConfig = {
   },
   Low: {
     icon: Sparkles,
-    color: "text-blue-600 dark:text-blue-400",
+    color: "text-[#1e3a8a] dark:text-blue-400",
     bg: "bg-blue-50 dark:bg-blue-900/20",
   },
 };

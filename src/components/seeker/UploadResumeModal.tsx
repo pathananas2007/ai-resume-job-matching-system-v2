@@ -1,4 +1,4 @@
-/** * @license * SPDX-License-Identifier: Apache-2.0 */ import React, {
+﻿/** * @license * SPDX-License-Identifier: Apache-2.0 */ import React, {
   useState,
 } from "react";
 import { User } from "firebase/auth";

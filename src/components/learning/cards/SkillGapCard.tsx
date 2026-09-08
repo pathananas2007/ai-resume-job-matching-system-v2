@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { ArrowRight, AlertTriangle } from "lucide-react";
 import { SkillGap } from "../types";
@@ -67,7 +67,7 @@ export function SkillGapCard({ gap }: SkillGapCardProps) {
               {" "}
               {/* Show the existing level + the gap required */}{" "}
               <div
-                className="absolute left-0 top-0 h-full bg-blue-600 dark:bg-blue-500"
+                className="absolute left-0 top-0 h-full bg-[#0d1b2a] dark:bg-blue-500"
                 style={{ width: `${gap.requiredLevel}%` }}
               />{" "}
             </div>{" "}

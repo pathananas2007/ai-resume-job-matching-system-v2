@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -28,7 +28,7 @@ export function ResourceDetailPage() {
         </h2>{" "}
         <button
           onClick={() => navigate("/seeker/learning")}
-          className="text-blue-600 hover:underline"
+          className="text-[#1e3a8a] hover:underline"
         >
           {" "}
           Return to Learning Hub{" "}
@@ -86,7 +86,7 @@ export function ResourceDetailPage() {
             </div>{" "}
             <div className="flex flex-col gap-3 shrink-0 w-full md:w-auto">
               {" "}
-              <button className="flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-700">
+              <button className="flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-[#0d1b2a] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#0a1628]">
                 {" "}
                 <Play className="h-5 w-5" /> Start Learning{" "}
               </button>{" "}
@@ -136,7 +136,7 @@ export function ResourceDetailPage() {
                 href={resource.url}
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold text-blue-600 hover:underline dark:text-blue-400 block truncate"
+                className="font-semibold text-[#1e3a8a] hover:underline dark:text-blue-400 block truncate"
               >
                 {" "}
                 {resource.provider} External Link{" "}

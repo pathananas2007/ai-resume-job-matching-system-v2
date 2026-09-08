@@ -1,4 +1,4 @@
-import React, {
+﻿import React, {
   createContext,
   useContext,
   useState,
@@ -30,13 +30,13 @@ const ICONS: Record<ToastType, React.ReactNode> = {
 const STYLES: Record<ToastType, string> = {
   success: "bg-white border-l-4 border-l-[#22C55E] text-[#1E293B]",
   error: "bg-white border-l-4 border-l-[#EF4444] text-[#1E293B]",
-  info: "bg-white border-l-4 border-l-[#2563EB] text-[#1E293B]",
+  info: "bg-white border-l-4 border-l-[#0d1b2a] text-[#1E293B]",
   warning: "bg-white border-l-4 border-l-[#F59E0B] text-[#1E293B]",
 };
 const ICON_COLORS: Record<ToastType, string> = {
   success: "text-[#22C55E]",
   error: "text-[#EF4444]",
-  info: "text-[#2563EB]",
+  info: "text-[#0d1b2a]",
   warning: "text-[#F59E0B]",
 };
 export function ToastProvider({ children }: { children: React.ReactNode }) {

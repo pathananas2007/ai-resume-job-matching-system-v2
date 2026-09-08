@@ -1,4 +1,4 @@
-import { cn } from "../../lib/utils";
+﻿import { cn } from "../../lib/utils";
 type BadgeVariant =
   "blue" | "cyan" | "green" | "amber" | "red" | "slate" | "purple";
 interface BadgeProps {

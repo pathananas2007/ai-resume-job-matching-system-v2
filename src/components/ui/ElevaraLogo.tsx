@@ -1,4 +1,4 @@
-import { cn } from "../../lib/utils";
+﻿import { cn } from "../../lib/utils";
 interface ElevaraLogoProps {
   size?: number;
   className?: string;
@@ -20,7 +20,7 @@ interface ElevaraLogoProps {
     >
       {" "}
       {/* Blue background */}{" "}
-      <rect width="100" height="100" rx="18" fill="#2563EB" />{" "}
+      <rect width="100" height="100" rx="18" fill="#0d1b2a" />{" "}
       {/* White E letterform */}{" "}
       <path
         d="M18 18 H68 V32 H34 V44 H60 V58 H34 V68 H70 V82 H18 Z"

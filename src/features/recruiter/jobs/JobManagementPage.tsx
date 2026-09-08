@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -411,13 +411,13 @@ function JobFormModal({
                 {(form.requirements || []).map((r, i) => (
                   <span
                     key={i}
-                    className="flex items-center gap-1.5 px-2.5 py-1 bg-[#EFF6FF] text-[#2563EB] text-xs font-medium rounded-full border border-[#BFDBFE]"
+                    className="flex items-center gap-1.5 px-2.5 py-1 bg-[#EFF6FF] text-[#0d1b2a] text-xs font-medium rounded-full border border-[#BFDBFE]"
                   >
                     {" "}
                     {r}{" "}
                     <button
                       onClick={() => removeReq(i)}
-                      className="text-[#93C5FD] hover:text-[#2563EB]"
+                      className="text-[#93C5FD] hover:text-[#0d1b2a]"
                     >
                       <X className="w-3 h-3" />
                     </button>{" "}
@@ -550,7 +550,7 @@ export default function JobManagementPage() {
               className={cn(
                 "text-xs px-1.5 py-0.5 rounded-full font-semibold",
                 statusFilter === s
-                  ? "bg-[#EFF6FF] text-[#2563EB]"
+                  ? "bg-[#EFF6FF] text-[#0d1b2a]"
                   : "bg-[#E2E8F0] text-[#64748B]",
               )}
             >
@@ -605,7 +605,7 @@ export default function JobManagementPage() {
                     {" "}
                     <div className="w-10 h-10 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center shrink-0">
                       {" "}
-                      <Briefcase className="w-5 h-5 text-[#2563EB]" />{" "}
+                      <Briefcase className="w-5 h-5 text-[#0d1b2a]" />{" "}
                     </div>{" "}
                     <div>
                       {" "}

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Map, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -96,7 +96,7 @@ export function RoadmapCard({ category }: RoadmapCardProps) {
         </div>{" "}
         <Link
           to={`/seeker/learning/roadmap/${category.id}`}
-          className="mt-6 flex items-center font-medium text-blue-600 transition-colors group-hover:text-blue-700 dark:text-blue-400 dark:group-hover:text-blue-300 w-fit"
+          className="mt-6 flex items-center font-medium text-[#1e3a8a] transition-colors group-hover:text-blue-700 dark:text-blue-400 dark:group-hover:text-blue-300 w-fit"
         >
           {" "}
           <span className="text-sm text-inherit">View full roadmap</span>{" "}

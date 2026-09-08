@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { SectionContainer } from "../layout/SectionContainer";
 import { TrendingUp } from "lucide-react";
 import { CareerPath } from "../types";
@@ -31,7 +31,7 @@ export function CareerPathRecommendationsWidget({
                 {" "}
                 <TrendingUp
                   className="h-3.5 w-3.5"
-                  style={{ color: "#2563EB" }}
+                  style={{ color: "#0d1b2a" }}
                 />{" "}
                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                   {" "}
@@ -39,7 +39,7 @@ export function CareerPathRecommendationsWidget({
                 </span>{" "}
               </div>{" "}
             </div>{" "}
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[#1e3a8a] dark:bg-blue-900/30 dark:text-blue-400">
               {" "}
               <span className="text-xs font-bold">
                 {career.matchScore}%

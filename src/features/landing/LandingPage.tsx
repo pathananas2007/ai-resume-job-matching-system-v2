@@ -1,6 +1,6 @@
 ﻿import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
 import {
   ArrowRight,
   FileText,
@@ -20,6 +20,36 @@ import {
   X,
 } from "lucide-react";
 import { ElevaraLogoMark } from "../../components/ui/ElevaraLogo"; /* ΓöÇΓöÇ Helpers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
+function ScrollImage3D({ src, alt }: { src: string; alt: string }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [18, 0, -18]);
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-12, 0, 12]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.88, 1, 0.88]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  return (
+    <div ref={ref} style={{ perspective: "1000px" }}>
+      <motion.div
+        style={{ rotateX, rotateY, scale, opacity, transformStyle: "preserve-3d" }}
+        className="relative"
+      >
+        <img src={src} alt={alt} className="w-full object-cover rounded-2xl" />
+        <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, #0f172a 100%)" }} />
+        {/* 3D shine sweep */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl pointer-events-none"
+          style={{
+            background: useTransform(rotateY, [-12, 0, 12], [
+              "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%)",
+              "linear-gradient(135deg, transparent 0%, transparent 100%)",
+              "linear-gradient(225deg, rgba(255,255,255,0.12) 0%, transparent 50%)"
+            ])
+          }}
+        />
+      </motion.div>
+    </div>
+  );
+}
 function FadeIn({
   children,
   delay = 0,
@@ -753,7 +783,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {" "}
-                <img src="https://i.ibb.co/JwCkcJkC/Chat-GPT-Image-Sep-8-2026-10-44-50-AM.png" alt="Dashboard Overview" className="w-full rounded-xl object-cover" />{" "}
+                <ScrollImage3D src="https://i.ibb.co/JwCkcJkC/Chat-GPT-Image-Sep-8-2026-10-44-50-AM.png" alt="Dashboard Overview" />{" "}
               </motion.div>{" "}
               {/* Floating ATS card */}{" "}
               <motion.div
@@ -770,7 +800,7 @@ export default function LandingPage() {
           {/* Mobile mockup */}{" "}
           <div className="lg:hidden mt-16 space-y-4">
             {" "}
-             <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full rounded-xl object-cover" />{" "}
+             <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full object-cover rounded-2xl" />{" "}
           </div>{" "}
         </div>{" "}
       </section>{" "}
@@ -782,153 +812,81 @@ export default function LandingPage() {
         {" "}
         <div className="max-w-7xl mx-auto">
           {" "}
-          <FadeIn className="text-center mb-16">
-            {" "}
-            <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
-              Platform Capabilities
-            </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
-              Everything You Need To Grow Professionally
-            </h2>{" "}
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-              {" "}
-              A complete career intelligence platform covering every stage of
-              your professional journey.{" "}
-            </p>{" "}
-          </FadeIn>{" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {" "}
-            {FEATURES.map((f, i) => (
-              <FadeIn key={i} delay={i * 0.06}>
-                {" "}
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white rounded-xl border border-[#E2E8F0] p-7 h-full hover:shadow-md hover:border-[#CBD5E1] transition-all duration-300 group"
-                >
-                  {" "}
-                  <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform ${f.color}`}
-                  >
-                    {" "}
-                    <f.icon className="w-6 h-6" />{" "}
-                  </div>{" "}
-                  <h3 className="text-lg font-semibold text-[#1E293B] mb-2">
-                    {f.title}
-                  </h3>{" "}
-                  <p className="text-[#64748B] leading-relaxed">
-                    {f.desc}
-                  </p>{" "}
-                </motion.div>{" "}
-              </FadeIn>
-            ))}{" "}
-          </div>{" "}
-        </div>{" "}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left - Image */}
+            <FadeIn>
+              <ScrollImage3D src="https://i.ibb.co/Lhhzgnsx/Chat-GPT-Image-Sep-9-2026-01-28-19-AM.png" alt="Platform Capabilities" />
+            </FadeIn>
+            {/* Right - Text + Features */}
+            <FadeIn delay={0.15}>
+              <div className="space-y-8">
+                <div>
+                  <p className="text-sm font-semibold text-blue-400 uppercase tracking-widest mb-3">Platform Capabilities</p>
+                  <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">Everything You Need To Grow Professionally</h2>
+                  <p className="text-lg text-slate-400 leading-relaxed">A complete career intelligence platform covering every stage of your professional journey.</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {FEATURES.map((f, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ x: 4 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-start gap-3 group"
+                    >
+                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-110 transition-transform ${f.color}`}>
+                        <f.icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">{f.title}</p>
+                        <p className="text-xs text-slate-400 mt-0.5 leading-snug">{f.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
       </section>{" "}
       {/* ΓöÇΓöÇ SECTION 3: How It Works ΓöÇΓöÇ */}{" "}
       <section id="how-it-works" className="py-24 px-6 bg-[#0f172a]">
-        {" "}
-        <div className="max-w-5xl mx-auto">
-          {" "}
-          <FadeIn className="text-center mb-16">
-            {" "}
-            <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
-              Process
-            </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
-              Your Career Journey In Five Steps
-            </h2>{" "}
-          </FadeIn>{" "}
-          <div className="relative">
-            {" "}
-            {/* Timeline line */}{" "}
-            <div
-              className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#2563EB] via-[#06B6D4] to-[#E2E8F0] hidden md:block"
-              style={{ left: "2.75rem" }}
-            />{" "}
-            <div className="space-y-10">
-              {" "}
-              {STEPS.map((step, i) => (
-                <FadeIn key={i} delay={i * 0.08}>
-                  {" "}
-                  <div className="flex gap-8 items-start">
-                    {" "}
-                    <div className="relative shrink-0">
-                      {" "}
-                      <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold border-2 z-10 relative transition-all ${i === 0 ? "bg-[#2563EB] text-white border-[#2563EB] shadow-md" : "bg-white text-[#64748B] border-[#E2E8F0] hover:border-[#2563EB] hover:text-[#2563EB]"}`}
-                      >
-                        {" "}
-                        {step.n}{" "}
-                      </div>{" "}
-                    </div>{" "}
-                    <div className="flex-1 pb-2">
-                      {" "}
-                      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6 hover:shadow-sm hover:border-[#CBD5E1] transition-all group">
-                        {" "}
-                        <h3 className="text-lg font-semibold text-[#1E293B] mb-2 group-hover:text-[#2563EB] transition-colors">
-                          {step.title}
-                        </h3>{" "}
-                        <p className="text-[#64748B] leading-relaxed">
-                          {step.desc}
-                        </p>{" "}
-                      </div>{" "}
-                    </div>{" "}
-                  </div>{" "}
-                </FadeIn>
-              ))}{" "}
-            </div>{" "}
-          </div>{" "}
-        </div>{" "}
-      </section>{" "}
-      {/* ΓöÇΓöÇ SECTION 4: Product Preview ΓöÇΓöÇ */}{" "}
-      <section
-        id="product-preview"
-        className="py-24 px-6 bg-[#0f172a]"
-      >
-        {" "}
         <div className="max-w-7xl mx-auto">
-          {" "}
           <FadeIn className="text-center mb-16">
-            {" "}
-            <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
-              Product Preview
-            </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
-              See Elevara In Action
-            </h2>{" "}
-            <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
-              {" "}
-              A look at the actual platform interface ΓÇö built for clarity and
-              professional use.{" "}
-            </p>{" "}
-          </FadeIn>{" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {" "}
-            <FadeIn delay={0.1}>
-              {" "}
-              <div className="bg-slate-800 rounded-2xl border border-slate-700 p-7 shadow-sm hover:shadow-md transition-shadow">
-                {" "}
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">
-                  Dashboard Overview
-                </p>{" "}
-                <img src="https://i.ibb.co/JwCkcJkC/Chat-GPT-Image-Sep-8-2026-10-44-50-AM.png" alt="Dashboard Overview" className="w-full rounded-xl object-cover" />{" "}
-              </div>{" "}
-            </FadeIn>{" "}
-            <FadeIn delay={0.2}>
-              {" "}
-              <div className="bg-slate-800 rounded-2xl border border-slate-700 p-7 shadow-sm hover:shadow-md transition-shadow space-y-5">
-                {" "}
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                  Resume Analysis
-                </p>{" "}
-                 <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full rounded-xl object-cover" />{" "}
-              </div>{" "}
-            </FadeIn>{" "}
-          </div>{" "}
-        </div>{" "}
+            <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">Process</p>
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">Your Career Journey In Five Steps</h2>
+          </FadeIn>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left - Steps */}
+            <div className="relative">
+              <div className="absolute top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#2563EB] via-[#06B6D4] to-transparent hidden md:block" style={{ left: "1.375rem" }} />
+              <div className="space-y-6">
+                {STEPS.map((step, i) => (
+                  <FadeIn key={i} delay={i * 0.08}>
+                    <div className="flex gap-6 items-start">
+                      <div className="shrink-0">
+                        <div className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold border-2 z-10 relative transition-all ${i === 0 ? "bg-[#2563EB] text-white border-[#2563EB] shadow-md" : "bg-slate-800 text-slate-400 border-slate-600 hover:border-blue-500 hover:text-blue-400"}`}>
+                          {step.n}
+                        </div>
+                      </div>
+                      <div className="flex-1 pb-2">
+                        <div className="bg-slate-800 rounded-xl border border-slate-700 p-5 hover:border-blue-500/50 transition-all group">
+                          <h3 className="text-base font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">{step.title}</h3>
+                          <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+            {/* Right - Image */}
+            <FadeIn delay={0.3}>
+              <ScrollImage3D src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Career Journey" />
+            </FadeIn>
+          </div>
+        </div>
       </section>{" "}
-      {/* ΓöÇΓöÇ SECTION 5: For Job Seekers ΓöÇΓöÇ */}{" "}
+{/* ΓöÇΓöÇ SECTION 5: For Job Seekers ΓöÇΓöÇ */}{" "}
       <section id="for-seekers" className="py-24 px-6 bg-[#0f172a]">
         {" "}
         <div className="max-w-7xl mx-auto">
@@ -948,7 +906,7 @@ export default function LandingPage() {
                     {" "}
                     Built For Career Growth{" "}
                   </h2>{" "}
-                  <p className="text-lg text-[#64748B] leading-relaxed">
+                  <p className="text-lg text-slate-400 leading-relaxed">
                     {" "}
                     Everything you need to understand your professional
                     standing, close skill gaps, and make informed career
@@ -965,16 +923,16 @@ export default function LandingPage() {
                       className="flex items-start gap-3 group"
                     >
                       {" "}
-                      <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#DBEAFE] transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-blue-500/20 transition-colors">
                         {" "}
                         <f.icon className="w-4 h-4 text-[#2563EB]" />{" "}
                       </div>{" "}
                       <div>
                         {" "}
-                        <p className="text-sm font-semibold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">
+                        <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
                           {f.title}
                         </p>{" "}
-                        <p className="text-sm text-[#64748B] mt-1 leading-snug">
+                        <p className="text-sm text-slate-400 mt-1 leading-snug">
                           {f.desc}
                         </p>{" "}
                       </div>{" "}
@@ -994,16 +952,10 @@ export default function LandingPage() {
               {" "}
               <div className="space-y-4">
                 {" "}
-                 <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full rounded-xl object-cover" />{" "}
-              </div>{" "}
-            </FadeIn>{" "}
-          </div>{" "}
-        </div>{" "}
-      </section>{" "}
-      {/* ΓöÇΓöÇ SECTION 6: For Recruiters ΓöÇΓöÇ */}{" "}
+                 <ScrollImage3D src="https://i.ibb.co/9917hykX/Chat-GPT-Image-Sep-8-2026-11-03-27-AM.png" alt="For Seekers" />{" "}</div>{" "}</FadeIn>{" "}</div>{" "}</div>{" "}</section>{" "}{/* SECTION 6: For Recruiters ΓöÇΓöÇ */}{" "}
       <section
         id="for-recruiters"
-        className="py-24 px-6 bg-gradient-to-b from-[#F5F7FA] to-white"
+        className="py-24 px-6 bg-[#0f172a]"
       >
         {" "}
         <div className="max-w-7xl mx-auto">
@@ -1012,8 +964,10 @@ export default function LandingPage() {
             {" "}
             <FadeIn delay={0.1} className="order-2 lg:order-1">
               {" "}
-              {/* Recruiter mockup */}{" "}
-              <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 shadow-sm hover:shadow-md transition-shadow">
+              <ScrollImage3D src="https://i.ibb.co/yFrrGH9X/Chat-GPT-Image-Sep-8-2026-12-13-40-PM.png" alt="For Recruiters" />{" "}
+              {/* Recruiter mockup - hidden, replaced by image */}{" "}
+              <div className="hidden">
+              <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                 {" "}
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">
                   Candidate Ranking ΓÇö Senior React Developer
@@ -1042,10 +996,10 @@ export default function LandingPage() {
                   ].map((c, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#BFDBFE] hover:bg-[#F0F8FF] transition-all group"
+                      className="flex items-center gap-3 p-3 rounded-lg bg-slate-700 border border-slate-600 hover:border-blue-500/50 hover:bg-slate-600 transition-all group"
                     >
                       {" "}
-                      <div className="w-8 h-8 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-xs font-bold text-[#2563EB] shrink-0 group-hover:bg-[#DBEAFE] transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 shrink-0 transition-colors">
                         {" "}
                         {c.name
                           .split(" ")
@@ -1056,7 +1010,7 @@ export default function LandingPage() {
                         {" "}
                         <div className="flex items-center justify-between mb-1">
                           {" "}
-                          <p className="text-sm font-semibold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">
+                          <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
                             {c.name}
                           </p>{" "}
                           <span
@@ -1095,6 +1049,7 @@ export default function LandingPage() {
                   ))}{" "}
                 </div>{" "}
               </div>{" "}
+            </div>{" "}
             </FadeIn>{" "}
             <FadeIn className="order-1 lg:order-2">
               {" "}
@@ -1109,7 +1064,7 @@ export default function LandingPage() {
                     {" "}
                     Built For Smarter Hiring{" "}
                   </h2>{" "}
-                  <p className="text-lg text-[#64748B] leading-relaxed">
+                  <p className="text-lg text-slate-400 leading-relaxed">
                     {" "}
                     Evaluate candidates efficiently with AI-powered ranking,
                     structured workflows, and objective scoring.{" "}
@@ -1134,7 +1089,7 @@ export default function LandingPage() {
                         <p className="text-sm font-semibold text-[#1E293B] group-hover:text-[#16A34A] transition-colors">
                           {f.title}
                         </p>{" "}
-                        <p className="text-sm text-[#64748B] mt-1 leading-snug">
+                        <p className="text-sm text-slate-400 mt-1 leading-snug">
                           {f.desc}
                         </p>{" "}
                       </div>{" "}
@@ -1153,57 +1108,8 @@ export default function LandingPage() {
           </div>{" "}
         </div>{" "}
       </section>{" "}
-      {/* ΓöÇΓöÇ SECTION 7: Platform Capabilities ΓöÇΓöÇ */}{" "}
-      <section className="py-24 px-6 bg-[#0f172a]">
-        {" "}
-        <div className="max-w-7xl mx-auto">
-          {" "}
-          <FadeIn className="text-center mb-16">
-            {" "}
-            <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
-              What's Included
-            </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
-              Platform Capabilities
-            </h2>{" "}
-            <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
-              {" "}
-              A comprehensive set of tools covering every aspect of career
-              development and talent acquisition.{" "}
-            </p>{" "}
-          </FadeIn>{" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {" "}
-            {CAPABILITIES.map((c, i) => (
-              <FadeIn key={i} delay={i * 0.05}>
-                {" "}
-                <motion.div
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex items-start gap-4 p-6 rounded-xl border border-[#E2E8F0] bg-white hover:shadow-sm hover:border-[#CBD5E1] transition-all group"
-                >
-                  {" "}
-                  <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-                    {" "}
-                    <CheckCircle className="w-4 h-4 text-[#2563EB]" />{" "}
-                  </div>{" "}
-                  <div>
-                    {" "}
-                    <p className="text-sm font-semibold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">
-                      {c.label}
-                    </p>{" "}
-                    <p className="text-sm text-[#64748B] mt-1 leading-snug">
-                      {c.desc}
-                    </p>{" "}
-                  </div>{" "}
-                </motion.div>{" "}
-              </FadeIn>
-            ))}{" "}
-          </div>{" "}
-        </div>{" "}
-      </section>{" "}
       {/* ΓöÇΓöÇ SECTION 8: Why Elevara ΓöÇΓöÇ */}{" "}
-      <section className="py-24 px-6 bg-gradient-to-b from-[#F5F7FA] to-white">
+      <section className="py-24 px-6 bg-[#0f172a]">
         {" "}
         <div className="max-w-7xl mx-auto">
           {" "}
@@ -1222,21 +1128,27 @@ export default function LandingPage() {
               <FadeIn key={i} delay={i * 0.06}>
                 {" "}
                 <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white rounded-xl border border-[#E2E8F0] p-7 h-full hover:shadow-md hover:border-[#CBD5E1] transition-all duration-300 group"
+                  whileHover={{ rotateY: 8, rotateX: -6, scale: 1.04, z: 40 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{ transformStyle: "preserve-3d", perspective: 800 }}
+                  className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-7 h-full hover:border-blue-500/50 transition-colors duration-300 group cursor-default shadow-lg hover:shadow-blue-500/20 hover:shadow-2xl"
                 >
-                  {" "}
-                  <div className="w-12 h-12 rounded-xl bg-[#EFF6FF] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                    {" "}
-                    <item.icon className="w-6 h-6 text-[#2563EB]" />{" "}
-                  </div>{" "}
-                  <h3 className="text-lg font-semibold text-[#1E293B] mb-2 group-hover:text-[#2563EB] transition-colors">
-                    {item.title}
-                  </h3>{" "}
-                  <p className="text-[#64748B] leading-relaxed">
-                    {item.desc}
-                  </p>{" "}
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* Shine overlay */}
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl" />
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300">
+                      <item.icon className="w-6 h-6 text-blue-400" />
+                    </div>
+                    <h3 className="text-base font-semibold text-white mb-2 group-hover:text-blue-300 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
                 </motion.div>{" "}
               </FadeIn>
             ))}{" "}

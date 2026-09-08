@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, Bell, Search, ChevronDown, User, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -65,7 +65,7 @@ export function Topbar({ onMobileMenuOpen }: TopbarProps) {
           {" "}
           <Bell className="w-5 h-5" /> {/* Unread dot */}{" "}
           {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white border-2 border-white">
+            <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#0d1b2a] text-[10px] font-bold text-white border-2 border-white">
               {" "}
               {unreadCount > 9 ? "9+" : unreadCount}{" "}
             </span>
@@ -92,7 +92,7 @@ export function Topbar({ onMobileMenuOpen }: TopbarProps) {
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllAsRead}
-                      className="text-xs text-[#2563EB] hover:underline"
+                      className="text-xs text-[#0d1b2a] hover:underline"
                     >
                       Mark all read
                     </button>
@@ -136,7 +136,7 @@ export function Topbar({ onMobileMenuOpen }: TopbarProps) {
                       <div className="flex items-start gap-2.5">
                         {" "}
                         {!n.isRead ? (
-                          <span className="w-2 h-2 rounded-full bg-[#2563EB] mt-1.5 shrink-0" />
+                          <span className="w-2 h-2 rounded-full bg-[#0d1b2a] mt-1.5 shrink-0" />
                         ) : (
                           <span className="w-2 h-2 mt-1.5 shrink-0" />
                         )}{" "}
@@ -167,7 +167,7 @@ export function Topbar({ onMobileMenuOpen }: TopbarProps) {
                     navigate(`${basePath}/notifications`);
                     setNotifOpen(false);
                   }}
-                  className="text-xs text-[#2563EB] hover:underline font-medium"
+                  className="text-xs text-[#0d1b2a] hover:underline font-medium"
                 >
                   {" "}
                   View all notifications{" "}
@@ -198,7 +198,7 @@ export function Topbar({ onMobileMenuOpen }: TopbarProps) {
           ) : (
             <div className="w-8 h-8 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center">
               {" "}
-              <User className="w-4 h-4 text-[#2563EB]" />{" "}
+              <User className="w-4 h-4 text-[#0d1b2a]" />{" "}
             </div>
           )}{" "}
           <div className="hidden sm:block text-left">

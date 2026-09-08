@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ElevaraLogoMark } from "./ui/ElevaraLogo";
 import { Menu, X } from "lucide-react";
@@ -55,7 +55,7 @@ export default function NavBar() {
           </Link>
           <Link
             to="/register"
-            className="text-sm font-semibold text-white bg-gradient-to-r from-[#2563EB] to-[#06B6D4] px-5 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+            className="text-sm font-semibold text-white bg-gradient-to-r from-[#0d1b2a] to-[#06B6D4] px-5 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
           >
             Get started free
           </Link>
@@ -109,7 +109,7 @@ export default function NavBar() {
             </Link>
             <Link
               to="/register"
-              className="flex-1 text-center text-sm font-semibold text-white bg-gradient-to-r from-[#2563EB] to-[#06B6D4] py-2 rounded-lg"
+              className="flex-1 text-center text-sm font-semibold text-white bg-gradient-to-r from-[#0d1b2a] to-[#06B6D4] py-2 rounded-lg"
             >
               Get started
             </Link>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Users, Clock, Award, ChevronRight } from "lucide-react";
 import { cn } from "../../../lib/utils"; /* ── Types & Data ────────────────────────────────────────────────────────────── */
@@ -24,10 +24,10 @@ const STAGES: Stage[] = [
   {
     key: "applied",
     label: "Applied",
-    color: "#2563EB",
+    color: "#0d1b2a",
     bg: "#EFF6FF",
     border: "#BFDBFE",
-    headerBg: "#2563EB",
+    headerBg: "#0d1b2a",
   },
   {
     key: "screening",
@@ -147,7 +147,7 @@ const INITIAL_PIPELINE: Record<StageKey, PipelineCandidate[]> = {
 };
 const REC_COLORS: Record<string, string> = {
   "Strong Hire": "bg-[#F0FDF4] text-[#16A34A] border-[#BBF7D0]",
-  Hire: "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]",
+  Hire: "bg-[#EFF6FF] text-[#0d1b2a] border-[#BFDBFE]",
   Consider: "bg-[#FFFBEB] text-[#D97706] border-[#FDE68A]",
   "No Hire": "bg-[#FEF2F2] text-[#DC2626] border-[#FECACA]",
 }; /* ── Candidate Card ──────────────────────────────────────────────────────────── */
@@ -212,7 +212,7 @@ function CandidateCard({
               candidate.score >= 85
                 ? "#22C55E"
                 : candidate.score >= 70
-                  ? "#2563EB"
+                  ? "#0d1b2a"
                   : "#F59E0B",
           }}
         >
@@ -257,7 +257,7 @@ function CandidateCard({
           {" "}
           <button
             onClick={() => setShowMove((v) => !v)}
-            className="flex items-center gap-1 text-[10px] font-semibold text-[#64748B] hover:text-[#2563EB] transition-colors px-2 py-1 rounded-lg hover:bg-[#EFF6FF]"
+            className="flex items-center gap-1 text-[10px] font-semibold text-[#64748B] hover:text-[#0d1b2a] transition-colors px-2 py-1 rounded-lg hover:bg-[#EFF6FF]"
           >
             {" "}
             Move <ChevronRight className="w-3 h-3" />{" "}

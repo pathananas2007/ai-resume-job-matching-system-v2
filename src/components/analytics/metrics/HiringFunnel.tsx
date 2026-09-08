@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { BaseChart } from "../charts/BaseChart";
 import { HiringFunnelProps, defaultColors } from "../types";

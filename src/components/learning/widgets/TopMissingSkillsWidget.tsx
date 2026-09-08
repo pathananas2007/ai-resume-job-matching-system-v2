@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { SectionContainer } from "../layout/SectionContainer";
 import { ArrowRight, Target } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -36,7 +36,7 @@ export function TopMissingSkillsWidget({
         </ul>{" "}
         <Link
           to="/seeker/skills"
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-slate-50 border border-slate-200 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 dark:bg-slate-800 dark:border-slate-700 dark:text-blue-400 dark:hover:bg-slate-700"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-slate-50 border border-slate-200 px-4 py-2 text-sm font-medium text-[#1e3a8a] transition-colors hover:bg-blue-50 dark:bg-slate-800 dark:border-slate-700 dark:text-blue-400 dark:hover:bg-slate-700"
         >
           {" "}
           View Full Analysis <ArrowRight className="h-4 w-4" />{" "}

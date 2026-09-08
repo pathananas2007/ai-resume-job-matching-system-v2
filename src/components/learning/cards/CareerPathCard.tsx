@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Briefcase, TrendingUp, CheckCircle2 } from "lucide-react";
 import { CareerPath } from "../types";
@@ -16,7 +16,7 @@ export function CareerPathCard({ career }: CareerPathCardProps) {
         {" "}
         <div className="flex items-center gap-3">
           {" "}
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0d1b2a] text-white shadow-sm">
             {" "}
             <Briefcase className="h-5 w-5" />{" "}
           </div>{" "}

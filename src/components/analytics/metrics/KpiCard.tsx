@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, ArrowDownRight, Minus, Loader2 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
@@ -34,7 +34,7 @@ export function KpiCard({
       {loading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-slate-900/50">
           {" "}
-          <Loader2 className="h-6 w-6 animate-spin text-blue-600" />{" "}
+          <Loader2 className="h-6 w-6 animate-spin text-[#1e3a8a]" />{" "}
         </div>
       )}{" "}
       <div className="flex items-center justify-between">
@@ -43,7 +43,7 @@ export function KpiCard({
           {title}
         </h3>{" "}
         {icon && (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-[#1e3a8a] dark:bg-blue-900/20 dark:text-blue-400">
             {" "}
             {icon}{" "}
           </div>

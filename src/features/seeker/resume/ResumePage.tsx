@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import {
   Upload,
   FileText,
@@ -196,7 +196,7 @@ function ResumeList({
     return (
       <div className="p-12 text-center bg-white rounded-xl border border-slate-200">
         {" "}
-        <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-3" />{" "}
+        <Loader2 className="w-8 h-8 text-[#1e3a8a] animate-spin mx-auto mb-3" />{" "}
         <p className="text-slate-500 font-medium">Loading resumes...</p>{" "}
       </div>
     );
@@ -248,8 +248,8 @@ function ResumeList({
                   className={cn(
                     "p-2 rounded-lg",
                     isHighlighted
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-blue-50 text-blue-600",
+                      ? "bg-blue-100 text-[#1e3a8a]"
+                      : "bg-blue-50 text-[#1e3a8a]",
                   )}
                 >
                   {" "}
@@ -302,7 +302,7 @@ function ResumeList({
                 {" "}
                 <button
                   onClick={() => onDownload(resume._id, resume.file_name)}
-                  className="p-2 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                  className="p-2 text-slate-400 hover:text-[#1e3a8a] rounded-lg hover:bg-blue-50 transition-colors"
                   title="Download"
                 >
                   {" "}
@@ -323,8 +323,8 @@ function ResumeList({
                           analyzingId === resume._id
                             ? "text-blue-400 bg-blue-50 cursor-wait"
                             : isHighlighted
-                              ? "text-white bg-blue-600 hover:bg-blue-700"
-                              : "text-slate-400 hover:text-blue-600 hover:bg-blue-50",
+                              ? "text-white bg-[#0d1b2a] hover:bg-[#0a1628]"
+                              : "text-slate-400 hover:text-[#1e3a8a] hover:bg-blue-50",
                         )}
                         title={
                           analyzingId === resume._id
@@ -351,8 +351,8 @@ function ResumeList({
                           analyzingId === resume._id
                             ? "text-blue-400 bg-blue-50 cursor-wait"
                             : isHighlighted
-                              ? "text-white bg-blue-600 hover:bg-blue-700"
-                              : "text-slate-400 hover:text-blue-600 hover:bg-blue-50",
+                              ? "text-white bg-[#0d1b2a] hover:bg-[#0a1628]"
+                              : "text-slate-400 hover:text-[#1e3a8a] hover:bg-blue-50",
                         )}
                         title={
                           analyzingId === resume._id
@@ -743,17 +743,17 @@ export default function ResumePage() {
               className={cn(
                 "flex flex-col items-center justify-center h-44 border-2 border-dashed rounded-xl cursor-pointer transition-all",
                 parsing
-                  ? "border-[#2563EB] bg-[#EFF6FF]"
+                  ? "border-[#0d1b2a] bg-[#EFF6FF]"
                   : fileName
                     ? "border-[#22C55E] bg-[#F0FDF4]"
-                    : "border-[#E2E8F0] hover:border-[#2563EB] hover:bg-[#EFF6FF]/30",
+                    : "border-[#E2E8F0] hover:border-[#0d1b2a] hover:bg-[#EFF6FF]/30",
               )}
             >
               {" "}
               {parsing ? (
                 <>
-                  <Loader2 className="w-8 h-8 text-[#2563EB] animate-spin mb-2" />
-                  <p className="text-sm font-medium text-[#2563EB]">
+                  <Loader2 className="w-8 h-8 text-[#0d1b2a] animate-spin mb-2" />
+                  <p className="text-sm font-medium text-[#0d1b2a]">
                     Uploading...
                   </p>
                 </>
@@ -866,7 +866,7 @@ export default function ResumePage() {
             href="https://aistudio.google.com/app/apikey"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#2563EB] hover:underline"
+            className="text-[#0d1b2a] hover:underline"
           >
             Gemini API key
           </a>{" "}

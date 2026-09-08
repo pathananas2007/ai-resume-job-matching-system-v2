@@ -1,4 +1,4 @@
-/** * @license * SPDX-License-Identifier: Apache-2.0 */ import { motion } from "motion/react";
+﻿/** * @license * SPDX-License-Identifier: Apache-2.0 */ import { motion } from "motion/react";
 import { User as UserIcon, Briefcase, ArrowRight, Loader2 } from "lucide-react";
 interface RoleSelectionProps {
   onSelect: (role: "seeker" | "recruiter") => void;

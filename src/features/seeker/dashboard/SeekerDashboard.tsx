@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import {
@@ -384,7 +384,7 @@ function StatusPill({ status }: { status: string }) {
     },
     applied: {
       label: "Applied",
-      cls: "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]",
+      cls: "bg-[#EFF6FF] text-[#0d1b2a] border-[#BFDBFE]",
     },
     rejected: {
       label: "Rejected",
@@ -498,7 +498,7 @@ function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
 }
 function ProgressBar({
   value,
-  color = "#2563EB",
+  color = "#0d1b2a",
   delay = 0,
 }: {
   value: number;
@@ -621,7 +621,7 @@ export default function SeekerDashboard() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] rounded-2xl p-6 text-white overflow-hidden relative"
+        className="bg-gradient-to-r from-[#0d1b2a] to-[#0d1b2a] rounded-2xl p-6 text-white overflow-hidden relative"
       >
         {" "}
         {/* Background decoration */}{" "}
@@ -673,7 +673,7 @@ export default function SeekerDashboard() {
             {" "}
             <Link
               to="/seeker/resume"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#2563EB] font-semibold text-sm rounded-lg px-5 py-2.5 hover:bg-blue-50 transition-colors shadow-sm"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#0d1b2a] font-semibold text-sm rounded-lg px-5 py-2.5 hover:bg-blue-50 transition-colors shadow-sm"
             >
               {" "}
               <Zap className="w-4 h-4" /> Analyze Resume{" "}
@@ -718,7 +718,7 @@ export default function SeekerDashboard() {
                 value="78"
                 sub="Resume compatibility"
                 trend={{ value: 6, positive: true }}
-                color="text-[#2563EB]"
+                color="text-[#0d1b2a]"
                 bg="bg-[#EFF6FF]"
                 href="/seeker/resume"
               />{" "}
@@ -794,7 +794,7 @@ export default function SeekerDashboard() {
                 sub="Resume compatibility"
                 color={
                   analyticsStats?.ats_score
-                    ? "text-[#2563EB]"
+                    ? "text-[#0d1b2a]"
                     : "text-[#94A3B8]"
                 }
                 bg={analyticsStats?.ats_score ? "bg-[#EFF6FF]" : "bg-[#F1F5F9]"}
@@ -910,7 +910,7 @@ export default function SeekerDashboard() {
                 <Bar
                   dataKey="interviews"
                   name="Interviews"
-                  fill="#2563EB"
+                  fill="#0d1b2a"
                   radius={[4, 4, 0, 0]}
                 />{" "}
               </BarChart>{" "}
@@ -951,7 +951,7 @@ export default function SeekerDashboard() {
                 <Bar
                   dataKey="interviews"
                   name="Interviews"
-                  fill="#2563EB"
+                  fill="#0d1b2a"
                   radius={[4, 4, 0, 0]}
                 />{" "}
               </BarChart>{" "}
@@ -989,12 +989,12 @@ export default function SeekerDashboard() {
                     {" "}
                     <stop
                       offset="5%"
-                      stopColor="#2563EB"
+                      stopColor="#0d1b2a"
                       stopOpacity={0.15}
                     />{" "}
                     <stop
                       offset="95%"
-                      stopColor="#2563EB"
+                      stopColor="#0d1b2a"
                       stopOpacity={0}
                     />{" "}
                   </linearGradient>{" "}
@@ -1021,10 +1021,10 @@ export default function SeekerDashboard() {
                   type="monotone"
                   dataKey="score"
                   name="ATS Score"
-                  stroke="#2563EB"
+                  stroke="#0d1b2a"
                   strokeWidth={2.5}
                   fill="url(#scoreGrad)"
-                  dot={{ fill: "#2563EB", r: 3 }}
+                  dot={{ fill: "#0d1b2a", r: 3 }}
                   activeDot={{ r: 5 }}
                 />{" "}
               </AreaChart>{" "}
@@ -1043,12 +1043,12 @@ export default function SeekerDashboard() {
                     {" "}
                     <stop
                       offset="5%"
-                      stopColor="#2563EB"
+                      stopColor="#0d1b2a"
                       stopOpacity={0.15}
                     />{" "}
                     <stop
                       offset="95%"
-                      stopColor="#2563EB"
+                      stopColor="#0d1b2a"
                       stopOpacity={0}
                     />{" "}
                   </linearGradient>{" "}
@@ -1075,10 +1075,10 @@ export default function SeekerDashboard() {
                   type="monotone"
                   dataKey="score"
                   name="ATS Score"
-                  stroke="#2563EB"
+                  stroke="#0d1b2a"
                   strokeWidth={2.5}
                   fill="url(#scoreGrad)"
-                  dot={{ fill: "#2563EB", r: 3 }}
+                  dot={{ fill: "#0d1b2a", r: 3 }}
                   activeDot={{ r: 5 }}
                 />{" "}
               </AreaChart>{" "}
@@ -1105,7 +1105,7 @@ export default function SeekerDashboard() {
           action={
             <Link
               to="/seeker/skills"
-              className="text-sm text-[#2563EB] hover:underline font-medium flex items-center gap-1"
+              className="text-sm text-[#0d1b2a] hover:underline font-medium flex items-center gap-1"
             >
               Full analysis <ChevronRight className="w-3.5 h-3.5" />
             </Link>
@@ -1165,7 +1165,7 @@ export default function SeekerDashboard() {
                     </div>{" "}
                     <Link
                       to="/seeker/learning"
-                      className="text-xs text-[#2563EB] font-medium hover:underline shrink-0"
+                      className="text-xs text-[#0d1b2a] font-medium hover:underline shrink-0"
                     >
                       {" "}
                       Learn ΓåÆ{" "}
@@ -1195,7 +1195,7 @@ export default function SeekerDashboard() {
           action={
             <Link
               to="/seeker/jobs"
-              className="text-sm text-[#2563EB] hover:underline font-medium flex items-center gap-1"
+              className="text-sm text-[#0d1b2a] hover:underline font-medium flex items-center gap-1"
             >
               View all <ChevronRight className="w-3.5 h-3.5" />
             </Link>
@@ -1254,7 +1254,7 @@ export default function SeekerDashboard() {
                       job.match >= 85
                         ? "#22C55E"
                         : job.match >= 70
-                          ? "#2563EB"
+                          ? "#0d1b2a"
                           : "#F59E0B"
                     }
                     delay={0.4 + i * 0.06}
@@ -1269,7 +1269,7 @@ export default function SeekerDashboard() {
                   {job.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
-                      className="px-2 py-0.5 bg-[#EFF6FF] text-[#2563EB] text-[10px] font-medium rounded-full border border-[#BFDBFE]"
+                      className="px-2 py-0.5 bg-[#EFF6FF] text-[#0d1b2a] text-[10px] font-medium rounded-full border border-[#BFDBFE]"
                     >
                       {tag}
                     </span>
@@ -1287,8 +1287,8 @@ export default function SeekerDashboard() {
                       className={cn(
                         "p-1.5 rounded-lg border transition-colors",
                         savedJobs.has(job.id)
-                          ? "bg-[#EFF6FF] border-[#BFDBFE] text-[#2563EB]"
-                          : "border-[#E2E8F0] text-[#94A3B8] hover:text-[#2563EB] hover:border-[#BFDBFE]",
+                          ? "bg-[#EFF6FF] border-[#BFDBFE] text-[#0d1b2a]"
+                          : "border-[#E2E8F0] text-[#94A3B8] hover:text-[#0d1b2a] hover:border-[#BFDBFE]",
                       )}
                       aria-label={
                         savedJobs.has(job.id) ? "Unsave job" : "Save job"
@@ -1300,7 +1300,7 @@ export default function SeekerDashboard() {
                         fill={savedJobs.has(job.id) ? "currentColor" : "none"}
                       />{" "}
                     </button>{" "}
-                    <button className="inline-flex items-center gap-1.5 bg-[#2563EB] text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-[#1D4ED8] transition-colors">
+                    <button className="inline-flex items-center gap-1.5 bg-[#0d1b2a] text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-[#0d1b2a] transition-colors">
                       {" "}
                       <Send className="w-3 h-3" /> Apply{" "}
                     </button>{" "}
@@ -1337,7 +1337,7 @@ export default function SeekerDashboard() {
           </div>{" "}
           <Link
             to="/seeker/applications"
-            className="text-sm text-[#2563EB] hover:underline font-medium flex items-center gap-1"
+            className="text-sm text-[#0d1b2a] hover:underline font-medium flex items-center gap-1"
           >
             {" "}
             View all <ChevronRight className="w-3.5 h-3.5" />{" "}
@@ -1410,7 +1410,7 @@ export default function SeekerDashboard() {
                             app.score >= 80
                               ? "text-[#22C55E]"
                               : app.score >= 65
-                                ? "text-[#2563EB]"
+                                ? "text-[#0d1b2a]"
                                 : "text-[#F59E0B]",
                           )}
                         >
@@ -1430,7 +1430,7 @@ export default function SeekerDashboard() {
                     <td className="px-6 py-3.5">
                       {" "}
                       <button
-                        className="p-1.5 text-[#94A3B8] hover:text-[#2563EB] hover:bg-[#EFF6FF] rounded-lg transition-colors"
+                        className="p-1.5 text-[#94A3B8] hover:text-[#0d1b2a] hover:bg-[#EFF6FF] rounded-lg transition-colors"
                         aria-label="View application"
                       >
                         {" "}
@@ -1496,7 +1496,7 @@ export default function SeekerDashboard() {
           action={
             <Link
               to="/seeker/learning"
-              className="text-sm text-[#2563EB] hover:underline font-medium flex items-center gap-1"
+              className="text-sm text-[#0d1b2a] hover:underline font-medium flex items-center gap-1"
             >
               Learning Hub <ChevronRight className="w-3.5 h-3.5" />
             </Link>
@@ -1522,7 +1522,7 @@ export default function SeekerDashboard() {
                 </div>{" "}
                 <div className="flex-1">
                   {" "}
-                  <p className="text-[10px] font-semibold text-[#2563EB] uppercase tracking-wider mb-1">
+                  <p className="text-[10px] font-semibold text-[#0d1b2a] uppercase tracking-wider mb-1">
                     {item.skill}
                   </p>{" "}
                   <h3 className="text-sm font-semibold text-[#1E293B] leading-snug mb-1.5">
@@ -1534,7 +1534,7 @@ export default function SeekerDashboard() {
                 </div>{" "}
                 <a
                   href={item.url}
-                  className="mt-4 inline-flex items-center justify-center gap-1.5 w-full bg-[#F5F7FA] text-[#475569] text-xs font-semibold py-2 rounded-lg hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors border border-[#E2E8F0]"
+                  className="mt-4 inline-flex items-center justify-center gap-1.5 w-full bg-[#F5F7FA] text-[#475569] text-xs font-semibold py-2 rounded-lg hover:bg-[#EFF6FF] hover:text-[#0d1b2a] transition-colors border border-[#E2E8F0]"
                 >
                   {" "}
                   <Play className="w-3 h-3" /> Start Learning{" "}
@@ -1564,12 +1564,12 @@ export default function SeekerDashboard() {
             <h2 className="text-lg font-semibold text-[#1E293B]">
               Notifications
             </h2>{" "}
-            <span className="w-5 h-5 rounded-full bg-[#2563EB] text-white text-[10px] font-bold flex items-center justify-center">
+            <span className="w-5 h-5 rounded-full bg-[#0d1b2a] text-white text-[10px] font-bold flex items-center justify-center">
               {" "}
               {NOTIFICATIONS.filter((n) => !n.read).length}{" "}
             </span>{" "}
           </div>{" "}
-          <button className="text-sm text-[#2563EB] hover:underline font-medium">
+          <button className="text-sm text-[#0d1b2a] hover:underline font-medium">
             Mark all read
           </button>{" "}
         </div>{" "}
@@ -1583,7 +1583,7 @@ export default function SeekerDashboard() {
               > = {
                 match: {
                   icon: Briefcase,
-                  color: "text-[#2563EB]",
+                  color: "text-[#0d1b2a]",
                   bg: "bg-[#EFF6FF]",
                 },
                 application: {
@@ -1633,7 +1633,7 @@ export default function SeekerDashboard() {
                         {notif.title}
                       </p>{" "}
                       {!notif.read && (
-                        <div className="w-2 h-2 rounded-full bg-[#2563EB] shrink-0 mt-1.5" />
+                        <div className="w-2 h-2 rounded-full bg-[#0d1b2a] shrink-0 mt-1.5" />
                       )}{" "}
                     </div>{" "}
                     <p className="text-sm text-[#64748B] mt-0.5 leading-snug">

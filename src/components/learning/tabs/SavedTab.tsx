@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { SectionContainer } from "../layout/SectionContainer";
 import { ResourceCard } from "../cards/ResourceCard";
 import { Bookmark } from "lucide-react";
@@ -50,7 +50,7 @@ export function SavedTab({
               </p>{" "}
               <button
                 onClick={onBrowseClick}
-                className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
+                className="rounded-xl bg-[#0d1b2a] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#0a1628]"
               >
                 {" "}
                 Browse Resources{" "}

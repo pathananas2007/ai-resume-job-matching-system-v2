@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { SectionContainer } from "../layout/SectionContainer";
 import { SkillGapCard } from "../cards/SkillGapCard";
 import { SkillGap } from "../types";
@@ -45,7 +45,7 @@ export function SkillGapsTab({ skillGaps }: SkillGapsTabProps) {
           <ArrowDown className="h-6 w-6 text-slate-400 my-4" />{" "}
           <div className="bg-white dark:bg-slate-900 shadow-sm border border-blue-200 dark:border-blue-900/50 rounded-lg px-6 py-4 w-full max-w-sm">
             {" "}
-            <h4 className="font-medium text-blue-600 dark:text-blue-500 text-sm mb-1">
+            <h4 className="font-medium text-[#1e3a8a] dark:text-blue-500 text-sm mb-1">
               Step 3
             </h4>{" "}
             <h3 className="font-semibold text-slate-900 dark:text-white">

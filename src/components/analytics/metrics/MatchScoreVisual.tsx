@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import {
   RadialBarChart,
   RadialBar,
@@ -23,7 +23,7 @@ export function MatchScoreVisual({
     /* Cyan */ {
       name: "Overall Match",
       value: candidateMatch,
-      fill: "#2563EB",
+      fill: "#0d1b2a",
     } /* Blue */,
   ];
   /* Calculate average for display */ const averageMatch = Math.round(

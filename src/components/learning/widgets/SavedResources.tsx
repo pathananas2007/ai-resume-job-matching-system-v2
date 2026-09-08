@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Bookmark, ExternalLink } from "lucide-react";
 import { Resource } from "../types";
@@ -47,7 +47,7 @@ export function SavedResources({ resources }: SavedResourcesProps) {
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-50 text-slate-400 transition-colors group-hover:bg-blue-50 group-hover:text-blue-600 dark:bg-slate-800 dark:text-slate-500 dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-400"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-50 text-slate-400 transition-colors group-hover:bg-blue-50 group-hover:text-[#1e3a8a] dark:bg-slate-800 dark:text-slate-500 dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-400"
           >
             {" "}
             <ExternalLink className="h-4 w-4" />{" "}

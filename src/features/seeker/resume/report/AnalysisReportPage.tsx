@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { motion } from "motion/react";
 import {
   CheckCircle,
@@ -305,5 +305,5 @@ const SAMPLE_DATA: ReportData = {
     ],
   },
 };
-const PIE_COLORS = ["#2563EB", "#06B6D4", "#7C3AED", "#22C55E", "#F59E0B"];
-const SKILL_COLORS = ["#2563EB", "#06B6D4", "#7C3AED", "#22C55E"];
+const PIE_COLORS = ["#0d1b2a", "#06B6D4", "#7C3AED", "#22C55E", "#F59E0B"];
+const SKILL_COLORS = ["#0d1b2a", "#06B6D4", "#7C3AED", "#22C55E"];

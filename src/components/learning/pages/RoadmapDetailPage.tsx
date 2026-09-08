@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import {
@@ -26,7 +26,7 @@ export function RoadmapDetailPage() {
         </h2>{" "}
         <button
           onClick={() => navigate("/seeker/learning")}
-          className="text-blue-600 hover:underline"
+          className="text-[#1e3a8a] hover:underline"
         >
           {" "}
           Return to Learning Hub{" "}

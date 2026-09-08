@@ -211,7 +211,24 @@ export default function RegisterPage() {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F8FAFC] via-[#F5F7FA] to-[#EFF2F5] flex items-center justify-center p-6 md:p-8">
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-6 md:p-8 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Radial glows */}
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full" style={{ background: "radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)" }} />
+        <motion.div animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }} className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)" }} />
+        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.15, 0.3, 0.15] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }} className="absolute top-[40%] right-[10%] w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)" }} />
+        {/* Mesh grid */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "linear-gradient(rgba(99,179,237,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,179,237,1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+        {/* Floating particles */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div key={i} className="absolute rounded-full"
+            style={{ width: 2 + (i % 3), height: 2 + (i % 3), left: `${8 + i * 7}%`, top: `${10 + (i * 13) % 80}%`, background: i % 2 === 0 ? "rgba(37,99,235,0.7)" : "rgba(6,182,212,0.7)" }}
+            animate={{ y: [0, -20, 0], opacity: [0.4, 0.8, 0.4] }}
+            transition={{ duration: 5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+          />
+        ))}
+      </div>
       {" "}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -271,7 +288,7 @@ export default function RegisterPage() {
                 <div
                   className={cn(
                     "flex-1 h-1 rounded-full transition-colors duration-300",
-                    step > s ? "bg-[#22C55E]" : "bg-[#E2E8F0]",
+                    step > s ? "bg-[#22C55E]" : "bg-slate-600",
                   )}
                 />
               )}{" "}
@@ -283,7 +300,7 @@ export default function RegisterPage() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="bg-slate-800 rounded-2xl shadow-lg shadow-blue-100/30 border border-[#E2E8F0] p-8 md:p-10"
+          className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8 md:p-10"
         >
           {" "}
           <AnimatePresence mode="wait">
@@ -334,8 +351,8 @@ export default function RegisterPage() {
                       className={cn(
                         "p-6 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group",
                         role === opt.value
-                          ? "border-[#2563EB] bg-gradient-to-br from-[#EFF6FF] to-[#F0F4F8] shadow-lg shadow-blue-200"
-                          : "border-[#E2E8F0] bg-white hover:border-[#BFDBFE] hover:shadow-lg hover:shadow-blue-100",
+                          ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-900/40"
+                          : "border-slate-600 bg-slate-700 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-900/30",
                       )}
                     >
                       {" "}
@@ -459,7 +476,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="full_name"
-                    className="label text-sm font-semibold text-white"
+                    className="label text-slate-300 text-sm font-semibold text-white"
                   >
                     Full name
                   </label>{" "}
@@ -470,7 +487,7 @@ export default function RegisterPage() {
                       type="text"
                       placeholder="Jane Smith"
                       className={cn(
-                        "input input-lg w-full transition-all duration-200 rounded-xl",
+                        "input input-lg w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 transition-all duration-200 rounded-xl",
                         validationState.full_name === "error" &&
                           "input-error border-[#EF4444] bg-[#FEF2F2]",
                         validationState.full_name === "valid" &&
@@ -509,7 +526,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="reg-email"
-                    className="label text-sm font-semibold text-white"
+                    className="label text-slate-300 text-sm font-semibold text-white"
                   >
                     Email address
                   </label>{" "}
@@ -520,7 +537,7 @@ export default function RegisterPage() {
                       type="email"
                       placeholder="you@example.com"
                       className={cn(
-                        "input input-lg w-full transition-all duration-200 rounded-xl",
+                        "input input-lg w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 transition-all duration-200 rounded-xl",
                         validationState.email === "error" &&
                           "input-error border-[#EF4444] bg-[#FEF2F2]",
                         validationState.email === "valid" &&
@@ -560,7 +577,7 @@ export default function RegisterPage() {
                     {" "}
                     <label
                       htmlFor="company_name"
-                      className="label text-sm font-semibold text-white"
+                      className="label text-slate-300 text-sm font-semibold text-white"
                     >
                       Company name
                     </label>{" "}
@@ -571,7 +588,7 @@ export default function RegisterPage() {
                         type="text"
                         placeholder="Acme Corp"
                         className={cn(
-                          "input input-lg w-full transition-all duration-200 rounded-xl",
+                          "input input-lg w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 transition-all duration-200 rounded-xl",
                           validationState.company_name === "error" &&
                             "input-error border-[#EF4444] bg-[#FEF2F2]",
                           validationState.company_name === "valid" &&
@@ -611,7 +628,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="reg-password"
-                    className="label text-sm font-semibold text-white"
+                    className="label text-slate-300 text-sm font-semibold text-white"
                   >
                     Password
                   </label>{" "}
@@ -622,7 +639,7 @@ export default function RegisterPage() {
                       type={showPw ? "text" : "password"}
                       placeholder="Min. 8 characters"
                       className={cn(
-                        "input input-lg w-full pr-14 transition-all duration-200 rounded-xl",
+                        "input input-lg w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 pr-14 transition-all duration-200 rounded-xl",
                         validationState.password === "error" &&
                           "input-error border-[#EF4444] bg-[#FEF2F2]",
                         validationState.password === "valid" &&
@@ -676,7 +693,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="confirm_password"
-                    className="label text-sm font-semibold text-white"
+                    className="label text-slate-300 text-sm font-semibold text-white"
                   >
                     Confirm password
                   </label>{" "}
@@ -687,7 +704,7 @@ export default function RegisterPage() {
                       type="password"
                       placeholder="Repeat password"
                       className={cn(
-                        "input input-lg w-full transition-all duration-200 rounded-xl",
+                        "input input-lg w-full bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 transition-all duration-200 rounded-xl",
                         validationState.confirm_password === "error" &&
                           "input-error border-[#EF4444] bg-[#FEF2F2]",
                         validationState.confirm_password === "valid" &&

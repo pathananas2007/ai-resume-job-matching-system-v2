@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { motion } from "motion/react";
@@ -33,7 +33,7 @@ export function LearningTabs({ activeTab, onChange }: LearningTabsProps) {
                 clsx(
                   "relative whitespace-nowrap py-4 px-1 text-sm font-medium transition-colors",
                   isActive
-                    ? "text-blue-600 dark:text-blue-400"
+                    ? "text-[#1e3a8a] dark:text-blue-400"
                     : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300",
                 ),
               )}
@@ -44,7 +44,7 @@ export function LearningTabs({ activeTab, onChange }: LearningTabsProps) {
               {isActive && (
                 <motion.div
                   layoutId="active-tab-indicator"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0d1b2a] dark:bg-blue-400"
                   initial={false}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />

@@ -1,4 +1,4 @@
-import { cn } from "../../lib/utils";
+﻿import { cn } from "../../lib/utils";
 type BadgeType =
   "recommendation" | "skill-status" | "gap-severity" | "difficulty" | "impact";
 interface BadgeProps {

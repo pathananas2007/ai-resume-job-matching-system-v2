@@ -1,4 +1,4 @@
-/** * @license * SPDX-License-Identifier: Apache-2.0 */import React, { useState, useCallback, useRef } from 'react';import { AnimatePresence, motion } from 'motion/react';import { CheckCircle, XCircle, Info, X } from 'lucide-react';import { cn } from '../../lib/utils';import { ToastContext, type Toast, type ToastType } from '../../hooks/useToast';/* --- Constants --- */
+﻿/** * @license * SPDX-License-Identifier: Apache-2.0 */import React, { useState, useCallback, useRef } from 'react';import { AnimatePresence, motion } from 'motion/react';import { CheckCircle, XCircle, Info, X } from 'lucide-react';import { cn } from '../../lib/utils';import { ToastContext, type Toast, type ToastType } from '../../hooks/useToast';/* --- Constants --- */
 const AUTO_DISMISS_MS = 4000;
 
 // --- Variant config ---

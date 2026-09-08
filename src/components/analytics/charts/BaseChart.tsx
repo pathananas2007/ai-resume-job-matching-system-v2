@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { motion } from "motion/react";
@@ -45,7 +45,7 @@ export function BaseChart({
         {loading && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-slate-900/50">
             {" "}
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />{" "}
+            <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />{" "}
           </div>
         )}{" "}
         {empty && !loading && (

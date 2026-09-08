@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "motion/react";
 import { Target, ArrowRight, Activity, Beaker } from "lucide-react";
 interface PersonalizedBannerProps {
@@ -85,7 +85,7 @@ export function PersonalizedBanner({
           {" "}
           <button
             onClick={onViewRoadmap}
-            className="group flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-blue-600 transition-all hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+            className="group flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-[#1e3a8a] transition-all hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
           >
             {" "}
             <Target className="h-4 w-4" /> View Roadmap{" "}

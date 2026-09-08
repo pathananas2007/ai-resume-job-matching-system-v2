@@ -1,4 +1,4 @@
-/** * @license * SPDX-License-Identifier: Apache-2.0 */ import { User } from "firebase/auth";
+﻿/** * @license * SPDX-License-Identifier: Apache-2.0 */ import { User } from "firebase/auth";
 import { UserProfile } from "../../types/index";
 import { motion } from "motion/react";
 import { LogOut, User as UserIcon } from "lucide-react";

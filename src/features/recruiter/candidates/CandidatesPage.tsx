@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Search,
@@ -186,7 +186,7 @@ const STATUS_CONFIG: Record<string, { label: string; cls: string }> = {
   },
   applied: {
     label: "Applied",
-    cls: "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]",
+    cls: "bg-[#EFF6FF] text-[#0d1b2a] border-[#BFDBFE]",
   },
   rejected: {
     label: "Rejected",
@@ -199,7 +199,7 @@ const STATUS_CONFIG: Record<string, { label: string; cls: string }> = {
 };
 const REC_CONFIG: Record<string, string> = {
   "Strong Hire": "bg-[#F0FDF4] text-[#16A34A] border-[#BBF7D0]",
-  Hire: "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]",
+  Hire: "bg-[#EFF6FF] text-[#0d1b2a] border-[#BFDBFE]",
   Consider: "bg-[#FFFBEB] text-[#D97706] border-[#FDE68A]",
   "No Hire": "bg-[#FEF2F2] text-[#DC2626] border-[#FECACA]",
 }; /* ── Candidate Detail Panel ──────────────────────────────────────────────────── */
@@ -238,7 +238,7 @@ function CandidatePanel({
         {/* Identity */}{" "}
         <div className="flex items-start gap-4">
           {" "}
-          <div className="w-14 h-14 rounded-full bg-[#EFF6FF] border-2 border-[#BFDBFE] flex items-center justify-center text-lg font-bold text-[#2563EB] shrink-0">
+          <div className="w-14 h-14 rounded-full bg-[#EFF6FF] border-2 border-[#BFDBFE] flex items-center justify-center text-lg font-bold text-[#0d1b2a] shrink-0">
             {" "}
             {candidate.name
               .split(" ")
@@ -281,7 +281,7 @@ function CandidatePanel({
             {
               label: "Overall",
               value: candidate.score,
-              color: candidate.score >= 85 ? "#22C55E" : "#2563EB",
+              color: candidate.score >= 85 ? "#22C55E" : "#0d1b2a",
             },
             { label: "Skills", value: candidate.skillsMatch, color: "#06B6D4" },
             {
@@ -337,9 +337,9 @@ function CandidatePanel({
               <Radar
                 name="Candidate"
                 dataKey="A"
-                stroke="#2563EB"
+                stroke="#0d1b2a"
                 strokeWidth={2}
-                fill="#2563EB"
+                fill="#0d1b2a"
                 fillOpacity={0.15}
               />{" "}
             </RadarChart>{" "}
@@ -396,7 +396,7 @@ function CandidatePanel({
             {candidate.skills.map((s) => (
               <span
                 key={s}
-                className="px-2.5 py-1 bg-[#EFF6FF] text-[#2563EB] text-xs font-medium rounded-full border border-[#BFDBFE]"
+                className="px-2.5 py-1 bg-[#EFF6FF] text-[#0d1b2a] text-xs font-medium rounded-full border border-[#BFDBFE]"
               >
                 {s}
               </span>
@@ -456,7 +456,7 @@ export default function CandidatesPage() {
             onClick={() => setShowFilters((v) => !v)}
             className={cn(
               "btn-secondary btn-sm gap-2",
-              showFilters && "bg-[#EFF6FF] border-[#BFDBFE] text-[#2563EB]",
+              showFilters && "bg-[#EFF6FF] border-[#BFDBFE] text-[#0d1b2a]",
             )}
           >
             {" "}
@@ -510,8 +510,8 @@ export default function CandidatesPage() {
                           className={cn(
                             "px-3 py-1 rounded-full text-xs font-medium border transition-colors capitalize",
                             statusFilter === s
-                              ? "bg-[#2563EB] text-white border-[#2563EB]"
-                              : "bg-white text-[#64748B] border-[#E2E8F0] hover:border-[#2563EB]",
+                              ? "bg-[#0d1b2a] text-white border-[#0d1b2a]"
+                              : "bg-white text-[#64748B] border-[#E2E8F0] hover:border-[#0d1b2a]",
                           )}
                         >
                           {" "}
@@ -540,8 +540,8 @@ export default function CandidatesPage() {
                           className={cn(
                             "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
                             recFilter === r
-                              ? "bg-[#2563EB] text-white border-[#2563EB]"
-                              : "bg-white text-[#64748B] border-[#E2E8F0] hover:border-[#2563EB]",
+                              ? "bg-[#0d1b2a] text-white border-[#0d1b2a]"
+                              : "bg-white text-[#64748B] border-[#E2E8F0] hover:border-[#0d1b2a]",
                           )}
                         >
                           {" "}
@@ -580,14 +580,14 @@ export default function CandidatesPage() {
                 className={cn(
                   "bg-white rounded-xl border p-4 cursor-pointer transition-all duration-150 hover:shadow-sm",
                   selected?.id === c.id
-                    ? "border-[#2563EB] bg-[#EFF6FF]/20"
+                    ? "border-[#0d1b2a] bg-[#EFF6FF]/20"
                     : "border-[#E2E8F0] hover:border-[#CBD5E1]",
                 )}
               >
                 {" "}
                 <div className="flex items-center gap-3">
                   {" "}
-                  <div className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-sm font-bold text-[#2563EB] shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-sm font-bold text-[#0d1b2a] shrink-0">
                     {" "}
                     {c.name
                       .split(" ")
@@ -607,7 +607,7 @@ export default function CandidatesPage() {
                           c.score >= 85
                             ? "text-[#22C55E]"
                             : c.score >= 70
-                              ? "text-[#2563EB]"
+                              ? "text-[#0d1b2a]"
                               : "text-[#F59E0B]",
                         )}
                       >
