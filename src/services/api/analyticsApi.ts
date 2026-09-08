@@ -1,1 +1,55 @@
-import { apiClient } from '../../lib/api/client';export interface DashboardStats {  ats_score: number | null;  profile_strength: number;  applications_count: number;  recommended_jobs_count: number;}export interface ApplicationActivityData {  week: string;  applied: number;  interviews: number;}export interface ATSTrendData {  month: string;  score: number;}export interface SkillGapData {  current_skills: string[];  missing_skills: Array<{ skill: string; importance?: string; reason?: string }>;}export const analyticsApi = {  /**   * Get dashboard statistics: ATS score, profile strength, applications count, recommended jobs   */  getDashboardStats: async (): Promise<DashboardStats> => {    const response = await apiClient<DashboardStats>('/analytics/dashboard/stats');    return response;  },  /**   * Get application activity trend over time   */  getApplicationActivity: async (days: number = 30): Promise<{ data: ApplicationActivityData[] }> => {    return apiClient(`/analytics/application-activity?days=${days}`);  },  /**   * Get ATS score trend over months   */  getATSTrend: async (months: number = 6): Promise<{ data: ATSTrendData[] }> => {    return apiClient(`/analytics/ats-score-trend?months=${months}`);  },  /**   * Get skill gaps from latest resume analysis   */  getSkillGaps: async (): Promise<SkillGapData> => {    return apiClient('/analytics/skill-gaps');  },};
+import { apiClient } from '../../lib/api/client';
+
+export interface DashboardStats {
+  ats_score: number | null;
+  profile_strength: number;
+  applications_count: number;
+  recommended_jobs_count: number;
+}
+
+export interface ApplicationActivityData {
+  week: string;
+  applied: number;
+  interviews: number;
+}
+
+export interface ATSTrendData {
+  month: string;
+  score: number;
+}
+
+export interface SkillGapData {
+  current_skills: string[];
+  missing_skills: Array<{ skill: string; importance?: string; reason?: string }>;
+}
+
+export const analyticsApi = {
+  /**
+   * Get dashboard statistics: ATS score, profile strength, applications count, recommended jobs
+   */
+  getDashboardStats: async (): Promise<DashboardStats> => {
+    const response = await apiClient<DashboardStats>('/analytics/dashboard/stats');
+    return response;
+  },
+
+  /**
+   * Get application activity trend over time
+   */
+  getApplicationActivity: async (days: number = 30): Promise<{ data: ApplicationActivityData[] }> => {
+    return apiClient(`/analytics/application-activity?days=${days}`);
+  },
+
+  /**
+   * Get ATS score trend over months
+   */
+  getATSTrend: async (months: number = 6): Promise<{ data: ATSTrendData[] }> => {
+    return apiClient(`/analytics/ats-score-trend?months=${months}`);
+  },
+
+  /**
+   * Get skill gaps from latest resume analysis
+   */
+  getSkillGaps: async (): Promise<SkillGapData> => {
+    return apiClient('/analytics/skill-gaps');
+  },
+};

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+﻿import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import {
@@ -55,7 +55,7 @@ function Logo() {
     <div className="flex items-center gap-2.5">
       {" "}
       <ElevaraLogoMark size={32} />{" "}
-      <span className="text-lg font-bold text-[#1E293B] tracking-tight">
+      <span className="text-lg font-bold text-white tracking-tight">
         Elevara
       </span>{" "}
     </div>
@@ -546,14 +546,14 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   return (
-    <div className="border border-[#E2E8F0] rounded-xl overflow-hidden bg-white hover:border-[#CBD5E1] transition-colors">
+    <div className="border border-slate-700 rounded-xl overflow-hidden bg-slate-800 hover:border-slate-500 transition-colors">
       {" "}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-[#F8FAFC] transition-colors group"
+        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-700 transition-colors group"
       >
         {" "}
-        <span className="text-base font-semibold text-[#1E293B] pr-4 group-hover:text-[#2563EB] transition-colors">
+        <span className="text-base font-semibold text-white pr-4 group-hover:text-blue-400 transition-colors">
           {q}
         </span>{" "}
         <motion.div
@@ -579,7 +579,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
         className="overflow-hidden"
       >
         {" "}
-        <p className="px-6 pb-5 text-[#64748B] leading-relaxed">{a}</p>{" "}
+        <p className="px-6 pb-5 text-slate-400 leading-relaxed">{a}</p>{" "}
       </motion.div>{" "}
     </div>
   );
@@ -587,10 +587,10 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div className="min-h-screen bg-[#0f172a] font-sans">
       {" "}
       {/* ΓöÇΓöÇ Navbar ΓöÇΓöÇ */}{" "}
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-[#E2E8F0] shadow-sm">
+      <nav className="sticky top-0 z-50 bg-[#0f172a]/95 backdrop-blur-xl border-b border-slate-700 shadow-sm">
         {" "}
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {" "}
@@ -607,7 +607,7 @@ export default function LandingPage() {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-sm font-medium text-[#64748B] hover:text-[#2563EB] transition-colors duration-200"
+                className="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors duration-200"
               >
                 {" "}
                 {item.label}{" "}
@@ -618,7 +618,7 @@ export default function LandingPage() {
             {" "}
             <Link
               to="/login"
-              className="btn-ghost btn-sm text-[#64748B] hover:text-[#1E293B]"
+              className="btn-ghost btn-sm text-slate-300 hover:text-white"
             >
               Sign in
             </Link>{" "}
@@ -648,7 +648,7 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-white border-t border-[#E2E8F0] px-6 py-5 space-y-1 shadow-sm"
+            className="md:hidden bg-[#0f172a] border-t border-slate-700 px-6 py-5 space-y-1 shadow-sm"
           >
             {" "}
             {[
@@ -662,7 +662,7 @@ export default function LandingPage() {
                 key={item}
                 href={`#${item.toLowerCase().replace(/ /g, "-")}`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block text-sm font-medium text-[#64748B] hover:text-[#1E293B] hover:bg-[#F5F7FA] py-2.5 px-3 rounded-lg transition-all"
+                className="block text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 py-2.5 px-3 rounded-lg transition-all"
               >
                 {" "}
                 {item}{" "}
@@ -708,7 +708,7 @@ export default function LandingPage() {
                   {" "}
                   <Zap className="w-3.5 h-3.5" /> Powered by Gemini AI{" "}
                 </div>{" "}
-                <h1 className="text-5xl lg:text-6xl font-bold text-[#1E293B] leading-tight tracking-tight mb-8">
+                <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-8">
                   {" "}
                   Grow Your Career With{" "}
                   <span className="bg-gradient-to-r from-[#2563EB] to-[#06B6D4] bg-clip-text text-transparent">
@@ -716,7 +716,7 @@ export default function LandingPage() {
                   </span>{" "}
                   Insights{" "}
                 </h1>{" "}
-                <p className="text-lg lg:text-xl text-[#64748B] leading-relaxed mb-10 max-w-lg">
+                <p className="text-lg lg:text-xl text-slate-300 leading-relaxed mb-10 max-w-lg">
                   {" "}
                   Analyze resumes, identify skill gaps, discover opportunities,
                   and track career growth through a single intelligent
@@ -753,7 +753,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {" "}
-                <DashboardMockup />{" "}
+                <img src="https://i.ibb.co/JwCkcJkC/Chat-GPT-Image-Sep-8-2026-10-44-50-AM.png" alt="Dashboard Overview" className="w-full rounded-xl object-cover" />{" "}
               </motion.div>{" "}
               {/* Floating ATS card */}{" "}
               <motion.div
@@ -763,21 +763,21 @@ export default function LandingPage() {
                 className="absolute -bottom-6 -left-8 w-64 shadow-lg"
               >
                 {" "}
-                <ATSScoreMockup />{" "}
+                {" "}
               </motion.div>{" "}
             </div>{" "}
           </div>{" "}
           {/* Mobile mockup */}{" "}
           <div className="lg:hidden mt-16 space-y-4">
             {" "}
-            <ATSScoreMockup /> <SkillGapMockup />{" "}
+             <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full rounded-xl object-cover" />{" "}
           </div>{" "}
         </div>{" "}
       </section>{" "}
       {/* ΓöÇΓöÇ SECTION 2: What Elevara Does ΓöÇΓöÇ */}{" "}
       <section
         id="features"
-        className="py-24 px-6 bg-gradient-to-b from-white to-[#F5F7FA]"
+        className="py-24 px-6 bg-[#0f172a]"
       >
         {" "}
         <div className="max-w-7xl mx-auto">
@@ -787,10 +787,10 @@ export default function LandingPage() {
             <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
               Platform Capabilities
             </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight mb-5">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
               Everything You Need To Grow Professionally
             </h2>{" "}
-            <p className="text-lg text-[#64748B] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
               {" "}
               A complete career intelligence platform covering every stage of
               your professional journey.{" "}
@@ -826,7 +826,7 @@ export default function LandingPage() {
         </div>{" "}
       </section>{" "}
       {/* ΓöÇΓöÇ SECTION 3: How It Works ΓöÇΓöÇ */}{" "}
-      <section id="how-it-works" className="py-24 px-6 bg-white">
+      <section id="how-it-works" className="py-24 px-6 bg-[#0f172a]">
         {" "}
         <div className="max-w-5xl mx-auto">
           {" "}
@@ -835,7 +835,7 @@ export default function LandingPage() {
             <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
               Process
             </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
               Your Career Journey In Five Steps
             </h2>{" "}
           </FadeIn>{" "}
@@ -864,7 +864,7 @@ export default function LandingPage() {
                     </div>{" "}
                     <div className="flex-1 pb-2">
                       {" "}
-                      <div className="bg-white rounded-xl border border-[#E2E8F0] p-6 hover:shadow-sm hover:border-[#CBD5E1] transition-all group">
+                      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6 hover:shadow-sm hover:border-[#CBD5E1] transition-all group">
                         {" "}
                         <h3 className="text-lg font-semibold text-[#1E293B] mb-2 group-hover:text-[#2563EB] transition-colors">
                           {step.title}
@@ -884,7 +884,7 @@ export default function LandingPage() {
       {/* ΓöÇΓöÇ SECTION 4: Product Preview ΓöÇΓöÇ */}{" "}
       <section
         id="product-preview"
-        className="py-24 px-6 bg-gradient-to-b from-white to-[#F5F7FA]"
+        className="py-24 px-6 bg-[#0f172a]"
       >
         {" "}
         <div className="max-w-7xl mx-auto">
@@ -894,10 +894,10 @@ export default function LandingPage() {
             <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
               Product Preview
             </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight mb-5">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
               See Elevara In Action
             </h2>{" "}
-            <p className="text-lg text-[#64748B] max-w-xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
               {" "}
               A look at the actual platform interface ΓÇö built for clarity and
               professional use.{" "}
@@ -907,29 +907,29 @@ export default function LandingPage() {
             {" "}
             <FadeIn delay={0.1}>
               {" "}
-              <div className="bg-white rounded-2xl border border-[#E2E8F0] p-7 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-slate-800 rounded-2xl border border-slate-700 p-7 shadow-sm hover:shadow-md transition-shadow">
                 {" "}
-                <p className="text-xs font-semibold text-[#64748B] uppercase tracking-widest mb-5">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">
                   Dashboard Overview
                 </p>{" "}
-                <DashboardMockup />{" "}
+                <img src="https://i.ibb.co/JwCkcJkC/Chat-GPT-Image-Sep-8-2026-10-44-50-AM.png" alt="Dashboard Overview" className="w-full rounded-xl object-cover" />{" "}
               </div>{" "}
             </FadeIn>{" "}
             <FadeIn delay={0.2}>
               {" "}
-              <div className="bg-white rounded-2xl border border-[#E2E8F0] p-7 shadow-sm hover:shadow-md transition-shadow space-y-5">
+              <div className="bg-slate-800 rounded-2xl border border-slate-700 p-7 shadow-sm hover:shadow-md transition-shadow space-y-5">
                 {" "}
-                <p className="text-xs font-semibold text-[#64748B] uppercase tracking-widest">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
                   Resume Analysis
                 </p>{" "}
-                <ATSScoreMockup /> <SkillGapMockup />{" "}
+                 <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full rounded-xl object-cover" />{" "}
               </div>{" "}
             </FadeIn>{" "}
           </div>{" "}
         </div>{" "}
       </section>{" "}
       {/* ΓöÇΓöÇ SECTION 5: For Job Seekers ΓöÇΓöÇ */}{" "}
-      <section id="for-seekers" className="py-24 px-6 bg-white">
+      <section id="for-seekers" className="py-24 px-6 bg-[#0f172a]">
         {" "}
         <div className="max-w-7xl mx-auto">
           {" "}
@@ -944,7 +944,7 @@ export default function LandingPage() {
                   <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
                     For Job Seekers
                   </p>{" "}
-                  <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight leading-tight mb-6">
+                  <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight mb-6">
                     {" "}
                     Built For Career Growth{" "}
                   </h2>{" "}
@@ -994,7 +994,7 @@ export default function LandingPage() {
               {" "}
               <div className="space-y-4">
                 {" "}
-                <ATSScoreMockup /> <SkillGapMockup />{" "}
+                 <img src="https://i.ibb.co/FLK4zsL8/Chat-GPT-Image-Sep-8-2026-10-50-49-AM.png" alt="Resume Analysis" className="w-full rounded-xl object-cover" />{" "}
               </div>{" "}
             </FadeIn>{" "}
           </div>{" "}
@@ -1015,7 +1015,7 @@ export default function LandingPage() {
               {/* Recruiter mockup */}{" "}
               <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 shadow-sm hover:shadow-md transition-shadow">
                 {" "}
-                <div className="text-xs font-semibold text-[#64748B] uppercase tracking-widest mb-5">
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">
                   Candidate Ranking ΓÇö Senior React Developer
                 </div>{" "}
                 <div className="space-y-3">
@@ -1105,7 +1105,7 @@ export default function LandingPage() {
                   <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
                     For Recruiters
                   </p>{" "}
-                  <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight leading-tight mb-6">
+                  <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight mb-6">
                     {" "}
                     Built For Smarter Hiring{" "}
                   </h2>{" "}
@@ -1154,7 +1154,7 @@ export default function LandingPage() {
         </div>{" "}
       </section>{" "}
       {/* ΓöÇΓöÇ SECTION 7: Platform Capabilities ΓöÇΓöÇ */}{" "}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 bg-[#0f172a]">
         {" "}
         <div className="max-w-7xl mx-auto">
           {" "}
@@ -1163,10 +1163,10 @@ export default function LandingPage() {
             <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
               What's Included
             </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight mb-5">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
               Platform Capabilities
             </h2>{" "}
-            <p className="text-lg text-[#64748B] max-w-xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
               {" "}
               A comprehensive set of tools covering every aspect of career
               development and talent acquisition.{" "}
@@ -1212,7 +1212,7 @@ export default function LandingPage() {
             <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
               Our Approach
             </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
               Why Choose Elevara
             </h2>{" "}
           </FadeIn>{" "}
@@ -1244,7 +1244,7 @@ export default function LandingPage() {
         </div>{" "}
       </section>{" "}
       {/* ΓöÇΓöÇ SECTION 9: FAQ ΓöÇΓöÇ */}{" "}
-      <section id="faq" className="py-24 px-6 bg-[#F8FAFC]">
+      <section id="faq" className="py-24 px-6 bg-slate-900">
         {" "}
         <div className="max-w-3xl mx-auto">
           {" "}
@@ -1253,7 +1253,7 @@ export default function LandingPage() {
             <p className="text-sm font-semibold text-[#2563EB] uppercase tracking-widest mb-3">
               FAQ
             </p>{" "}
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1E293B] tracking-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
               Common Questions
             </h2>{" "}
           </FadeIn>{" "}
@@ -1315,7 +1315,7 @@ export default function LandingPage() {
         </div>{" "}
       </section>{" "}
       {/* ΓöÇΓöÇ Footer ΓöÇΓöÇ */}{" "}
-      <footer className="py-12 px-6 bg-white border-t border-[#E2E8F0]">
+      <footer className="py-12 px-6 bg-slate-900 border-t border-slate-700">
         {" "}
         <div className="max-w-7xl mx-auto">
           {" "}
@@ -1324,14 +1324,14 @@ export default function LandingPage() {
             <div className="col-span-2 md:col-span-1">
               {" "}
               <Logo />{" "}
-              <p className="text-sm text-[#64748B] mt-4 leading-relaxed">
+              <p className="text-sm text-slate-400 mt-4 leading-relaxed">
                 {" "}
                 An AI-powered career growth and hiring platform.{" "}
               </p>{" "}
             </div>{" "}
             <div>
               {" "}
-              <p className="text-xs font-semibold text-[#1E293B] uppercase tracking-widest mb-4">
+              <p className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4">
                 Platform
               </p>{" "}
               <div className="space-y-3">
@@ -1350,17 +1350,17 @@ export default function LandingPage() {
             </div>{" "}
             <div>
               {" "}
-              <p className="text-xs font-semibold text-[#1E293B] uppercase tracking-widest mb-4">
+              <p className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4">
                 Legal
               </p>{" "}
               <div className="space-y-3">
                 {" "}
-                <p className="text-sm text-[#94A3B8]">Coming Soon</p>{" "}
+                <p className="text-sm text-slate-500">Coming Soon</p>{" "}
               </div>{" "}
             </div>{" "}
             <div>
               {" "}
-              <p className="text-xs font-semibold text-[#1E293B] uppercase tracking-widest mb-4">
+              <p className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4">
                 Connect
               </p>{" "}
               <div className="space-y-3">
@@ -1404,12 +1404,12 @@ export default function LandingPage() {
               </div>{" "}
             </div>{" "}
           </div>{" "}
-          <div className="border-t border-[#E2E8F0] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="border-t border-slate-700 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             {" "}
-            <p className="text-sm text-[#94A3B8]">
+            <p className="text-sm text-slate-500">
               ┬⌐ {new Date().getFullYear()} Elevara. All rights reserved.
             </p>{" "}
-            <p className="text-sm text-[#94A3B8]">
+            <p className="text-sm text-slate-500">
               Built with React, TypeScript & Gemini AI
             </p>{" "}
           </div>{" "}

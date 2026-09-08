@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -229,7 +229,7 @@ export default function RegisterPage() {
         >
           {" "}
           <ElevaraLogoMark size={36} />{" "}
-          <span className="text-2xl font-bold text-[#1E293B]">
+          <span className="text-2xl font-bold text-white">
             Elevara
           </span>{" "}
         </motion.div>{" "}
@@ -252,7 +252,7 @@ export default function RegisterPage() {
                     ? "bg-[#22C55E] text-white shadow-lg shadow-green-200"
                     : step === s
                       ? "bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white shadow-lg shadow-blue-200"
-                      : "bg-[#E2E8F0] text-[#94A3B8]",
+                      : "bg-[#E2E8F0] text-slate-500",
                 )}
               >
                 {" "}
@@ -261,7 +261,7 @@ export default function RegisterPage() {
               <span
                 className={cn(
                   "text-sm font-semibold transition-colors duration-200",
-                  step >= s ? "text-[#1E293B]" : "text-[#94A3B8]",
+                  step >= s ? "text-white" : "text-slate-500",
                 )}
               >
                 {" "}
@@ -283,7 +283,7 @@ export default function RegisterPage() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="bg-white rounded-2xl shadow-lg shadow-blue-100/30 border border-[#E2E8F0] p-8 md:p-10"
+          className="bg-slate-800 rounded-2xl shadow-lg shadow-blue-100/30 border border-[#E2E8F0] p-8 md:p-10"
         >
           {" "}
           <AnimatePresence mode="wait">
@@ -300,10 +300,10 @@ export default function RegisterPage() {
                 {" "}
                 <div>
                   {" "}
-                  <h1 className="text-3xl font-bold text-[#1E293B]">
+                  <h1 className="text-3xl font-bold text-white">
                     I am a...
                   </h1>{" "}
-                  <p className="text-[#64748B] mt-2 text-base font-light">
+                  <p className="text-slate-400 mt-2 text-base font-light">
                     Choose your role to get started
                   </p>{" "}
                 </div>{" "}
@@ -360,7 +360,7 @@ export default function RegisterPage() {
                             "w-12 h-12 rounded-xl flex items-center justify-center transition-all",
                             role === opt.value
                               ? `bg-gradient-to-br ${opt.color}`
-                              : "bg-[#F5F7FA] group-hover:bg-[#EFF6FF]",
+                              : "bg-slate-700 group-hover:bg-blue-500/10",
                           )}
                         >
                           {" "}
@@ -369,7 +369,7 @@ export default function RegisterPage() {
                               "w-6 h-6 transition-colors",
                               role === opt.value
                                 ? "text-white"
-                                : "text-[#64748B] group-hover:text-[#2563EB]",
+                                : "text-slate-400 group-hover:text-[#2563EB]",
                             )}
                           />{" "}
                         </motion.div>{" "}
@@ -378,13 +378,13 @@ export default function RegisterPage() {
                             "font-bold text-base transition-colors",
                             role === opt.value
                               ? "text-[#2563EB]"
-                              : "text-[#1E293B]",
+                              : "text-white",
                           )}
                         >
                           {" "}
                           {opt.title}{" "}
                         </p>{" "}
-                        <p className="text-sm text-[#64748B] leading-snug">
+                        <p className="text-sm text-slate-400 leading-snug">
                           {opt.desc}
                         </p>{" "}
                       </div>{" "}
@@ -419,10 +419,10 @@ export default function RegisterPage() {
                   {" "}
                   <div>
                     {" "}
-                    <h1 className="text-3xl font-bold text-[#1E293B]">
+                    <h1 className="text-3xl font-bold text-white">
                       Create your account
                     </h1>{" "}
-                    <p className="text-[#64748B] mt-2 text-base font-light">
+                    <p className="text-slate-400 mt-2 text-base font-light">
                       {" "}
                       Registering as a{" "}
                       <span className="font-semibold text-[#2563EB] capitalize">
@@ -459,7 +459,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="full_name"
-                    className="label text-sm font-semibold text-[#1E293B]"
+                    className="label text-sm font-semibold text-white"
                   >
                     Full name
                   </label>{" "}
@@ -509,7 +509,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="reg-email"
-                    className="label text-sm font-semibold text-[#1E293B]"
+                    className="label text-sm font-semibold text-white"
                   >
                     Email address
                   </label>{" "}
@@ -560,7 +560,7 @@ export default function RegisterPage() {
                     {" "}
                     <label
                       htmlFor="company_name"
-                      className="label text-sm font-semibold text-[#1E293B]"
+                      className="label text-sm font-semibold text-white"
                     >
                       Company name
                     </label>{" "}
@@ -611,7 +611,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="reg-password"
-                    className="label text-sm font-semibold text-[#1E293B]"
+                    className="label text-sm font-semibold text-white"
                   >
                     Password
                   </label>{" "}
@@ -640,7 +640,7 @@ export default function RegisterPage() {
                     <motion.button
                       type="button"
                       onClick={() => setShowPw((v) => !v)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#64748B] transition-colors p-1 hover:bg-[#F5F7FA] rounded-lg"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-400 transition-colors p-1 hover:bg-slate-700 rounded-lg"
                       tabIndex={-1}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
@@ -676,7 +676,7 @@ export default function RegisterPage() {
                   {" "}
                   <label
                     htmlFor="confirm_password"
-                    className="label text-sm font-semibold text-[#1E293B]"
+                    className="label text-sm font-semibold text-white"
                   >
                     Confirm password
                   </label>{" "}
@@ -736,7 +736,7 @@ export default function RegisterPage() {
                     }
                     disabled={isLoading}
                   />{" "}
-                  <span className="text-sm text-[#475569] font-medium leading-relaxed">
+                  <span className="text-sm text-slate-400 font-medium leading-relaxed">
                     {" "}
                     I agree to the{" "}
                     <a className="text-[#2563EB] hover:underline cursor-pointer font-semibold">
@@ -817,7 +817,7 @@ export default function RegisterPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.4 }}
-          className="text-center text-sm text-[#64748B] mt-8"
+          className="text-center text-sm text-slate-400 mt-8"
         >
           {" "}
           Already have an account?{" "}

@@ -1,1 +1,183 @@
-import { apiClient } from '../../lib/api/client';import type {  ApiResume,  ApiResumeListResponse,  ApiResumeUploadResponse,  ApiResumeUpdate,  ApiAnalysisResult,  ApiSkillGapAnalysis,  ApiLearningRecommendation,} from '../../types/api';import { useAuthStore } from '../../store/authStore';const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';export const resumeApi = {  /**   * Upload a new resume (PDF or DOCX).   * Maps to POST /resumes/upload   * Uses FormData internally.   */  uploadResume: async (file: File): Promise<ApiResumeUploadResponse> => {    const formData = new FormData();    formData.append('file', file);    return apiClient<ApiResumeUploadResponse>('/resumes/upload', {      data: formData,    });  },  /**   * List resumes for the current authenticated user.   * Maps to GET /resumes   */  listResumes: async (): Promise<ApiResumeListResponse> => {    return apiClient<ApiResumeListResponse>('/resumes');  },  /**   * Get metadata for a specific resume.   * Maps to GET /resumes/{resume_id}   */  getResume: async (resumeId: string): Promise<ApiResume> => {    return apiClient<ApiResume>(`/resumes/${resumeId}`);  },  /**   * Update resume metadata (e.g., file name, archive status).   * Maps to PATCH /resumes/{resume_id}   */  updateResume: async (resumeId: string, data: ApiResumeUpdate): Promise<ApiResume> => {    return apiClient<ApiResume>(`/resumes/${resumeId}`, {      method: 'PATCH',      data,    });  },  /**   * Archive a resume.   * Maps to POST /resumes/{resume_id}/archive   */  archiveResume: async (resumeId: string): Promise<ApiResume> => {    return apiClient<ApiResume>(`/resumes/${resumeId}/archive`, {      method: 'POST',      data: {}, // some backends expect an empty body for POST    });  },  /**   * Delete a resume.   * Maps to DELETE /resumes/{resume_id}   */  deleteResume: async (resumeId: string): Promise<{ message: string }> => {    return apiClient<{ message: string }>(`/resumes/${resumeId}`, {      method: 'DELETE',    });  },  /**   * Download a resume by triggering a browser download directly.   * Maps to GET /resumes/{resume_id}/download   * We do not use `apiClient` because it tries to parse JSON/Text.   */  downloadResume: async (resumeId: string, fileName: string): Promise<void> => {    const token = useAuthStore.getState().token;    const url = `${API_BASE_URL}/resumes/${resumeId}/download`;        try {      const response = await fetch(url, {        method: 'GET',        headers: token ? { Authorization: `Bearer ${token}` } : {},      });      if (!response.ok) {        let errorMessage = 'Download failed';        const contentType = response.headers.get('content-type');                // Try to parse error response if it's JSON        if (contentType?.includes('application/json')) {          try {            const errorData = await response.json();            errorMessage = errorData.detail || errorData.message || errorMessage;          } catch (e) {            // If JSON parsing fails, use status text            errorMessage = response.statusText || errorMessage;          }        } else {          errorMessage = `${response.status} ${response.statusText}`;        }                throw new Error(errorMessage);      }      // Convert response to blob      const blob = await response.blob();            // Validate blob size      if (blob.size === 0) {        throw new Error('Downloaded file is empty');      }            // Create a temporary object URL      const downloadUrl = window.URL.createObjectURL(blob);            // Create an invisible anchor tag to trigger download      const a = document.createElement('a');      a.href = downloadUrl;      a.download = fileName || 'resume.pdf'; // Fallback filename      document.body.appendChild(a);      a.click();            // Cleanup      document.body.removeChild(a);      window.URL.revokeObjectURL(downloadUrl);    } catch (err: any) {      throw new Error(err.message || 'Failed to download resume');    }  },  /**   * Trigger AI analysis on an uploaded resume.   * Maps to POST /resumes/{resume_id}/analyze   */  analyzeResume: async (resumeId: string): Promise<ApiAnalysisResult> => {    return apiClient<ApiAnalysisResult>(`/resumes/${resumeId}/analyze`, {      method: 'POST',      data: {},    });  },  /**   * Retrieve the latest stored analysis for a resume.   * Maps to GET /resumes/{resume_id}/analysis   */  getAnalysis: async (resumeId: string): Promise<ApiAnalysisResult> => {    return apiClient<ApiAnalysisResult>(`/resumes/${resumeId}/analysis`);  },  /**   * Get skill gaps for a resume.   * Maps to GET /resumes/{resume_id}/skill-gaps   */  getSkillGaps: async (resumeId: string, targetJobId?: string): Promise<ApiSkillGapAnalysis> => {    const query = targetJobId ? `?target_job_id=${targetJobId}` : '';    return apiClient<ApiSkillGapAnalysis>(`/resumes/${resumeId}/skill-gaps${query}`);  },  /**   * Get learning recommendations for a resume.   * Maps to GET /resumes/{resume_id}/recommendations   */  getRecommendations: async (resumeId: string): Promise<ApiLearningRecommendation[]> => {    return apiClient<ApiLearningRecommendation[]>(`/resumes/${resumeId}/recommendations`);  },  /**   * Re-run AI analysis for an existing resume.   * Maps to POST /resumes/{resume_id}/refresh   */  refreshAnalysis: async (resumeId: string): Promise<ApiAnalysisResult> => {    return apiClient<ApiAnalysisResult>(`/resumes/${resumeId}/refresh`, {      method: 'POST',    });  },};
+import { apiClient } from '../../lib/api/client';
+import type {
+  ApiResume,
+  ApiResumeListResponse,
+  ApiResumeUploadResponse,
+  ApiResumeUpdate,
+  ApiAnalysisResult,
+  ApiSkillGapAnalysis,
+  ApiLearningRecommendation,
+} from '../../types/api';
+import { useAuthStore } from '../../store/authStore';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+
+export const resumeApi = {
+  /**
+   * Upload a new resume (PDF or DOCX).
+   * Maps to POST /resumes/upload
+   * Uses FormData internally.
+   */
+  uploadResume: async (file: File): Promise<ApiResumeUploadResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiClient<ApiResumeUploadResponse>('/resumes/upload', {
+      data: formData,
+    });
+  },
+
+  /**
+   * List resumes for the current authenticated user.
+   * Maps to GET /resumes
+   */
+  listResumes: async (): Promise<ApiResumeListResponse> => {
+    return apiClient<ApiResumeListResponse>('/resumes');
+  },
+
+  /**
+   * Get metadata for a specific resume.
+   * Maps to GET /resumes/{resume_id}
+   */
+  getResume: async (resumeId: string): Promise<ApiResume> => {
+    return apiClient<ApiResume>(`/resumes/${resumeId}`);
+  },
+
+  /**
+   * Update resume metadata (e.g., file name, archive status).
+   * Maps to PATCH /resumes/{resume_id}
+   */
+  updateResume: async (resumeId: string, data: ApiResumeUpdate): Promise<ApiResume> => {
+    return apiClient<ApiResume>(`/resumes/${resumeId}`, {
+      method: 'PATCH',
+      data,
+    });
+  },
+
+  /**
+   * Archive a resume.
+   * Maps to POST /resumes/{resume_id}/archive
+   */
+  archiveResume: async (resumeId: string): Promise<ApiResume> => {
+    return apiClient<ApiResume>(`/resumes/${resumeId}/archive`, {
+      method: 'POST',
+      data: {}, // some backends expect an empty body for POST
+    });
+  },
+
+  /**
+   * Delete a resume.
+   * Maps to DELETE /resumes/{resume_id}
+   */
+  deleteResume: async (resumeId: string): Promise<{ message: string }> => {
+    return apiClient<{ message: string }>(`/resumes/${resumeId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  /**
+   * Download a resume by triggering a browser download directly.
+   * Maps to GET /resumes/{resume_id}/download
+   * We do not use `apiClient` because it tries to parse JSON/Text.
+   */
+  downloadResume: async (resumeId: string, fileName: string): Promise<void> => {
+    const token = useAuthStore.getState().token;
+    const url = `${API_BASE_URL}/resumes/${resumeId}/download`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      if (!response.ok) {
+        let errorMessage = 'Download failed';
+        const contentType = response.headers.get('content-type');
+
+        // Try to parse error response if it's JSON
+        if (contentType?.includes('application/json')) {
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.detail || errorData.message || errorMessage;
+          } catch (e) {
+            // If JSON parsing fails, use status text
+            errorMessage = response.statusText || errorMessage;
+          }
+        } else {
+          errorMessage = `${response.status} ${response.statusText}`;
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      // Convert response to blob
+      const blob = await response.blob();
+
+      // Validate blob size
+      if (blob.size === 0) {
+        throw new Error('Downloaded file is empty');
+      }
+
+      // Create a temporary object URL
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // Create an invisible anchor tag to trigger download
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = fileName || 'resume.pdf'; // Fallback filename
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (err: any) {
+      throw new Error(err.message || 'Failed to download resume');
+    }
+  },
+
+  /**
+   * Trigger AI analysis on an uploaded resume.
+   * Maps to POST /resumes/{resume_id}/analyze
+   */
+  analyzeResume: async (resumeId: string): Promise<ApiAnalysisResult> => {
+    return apiClient<ApiAnalysisResult>(`/resumes/${resumeId}/analyze`, {
+      method: 'POST',
+      data: {},
+    });
+  },
+
+  /**
+   * Retrieve the latest stored analysis for a resume.
+   * Maps to GET /resumes/{resume_id}/analysis
+   */
+  getAnalysis: async (resumeId: string): Promise<ApiAnalysisResult> => {
+    return apiClient<ApiAnalysisResult>(`/resumes/${resumeId}/analysis`);
+  },
+
+  /**
+   * Get skill gaps for a resume.
+   * Maps to GET /resumes/{resume_id}/skill-gaps
+   */
+  getSkillGaps: async (resumeId: string, targetJobId?: string): Promise<ApiSkillGapAnalysis> => {
+    const query = targetJobId ? `?target_job_id=${targetJobId}` : '';
+    return apiClient<ApiSkillGapAnalysis>(`/resumes/${resumeId}/skill-gaps${query}`);
+  },
+
+  /**
+   * Get learning recommendations for a resume.
+   * Maps to GET /resumes/{resume_id}/recommendations
+   */
+  getRecommendations: async (resumeId: string): Promise<ApiLearningRecommendation[]> => {
+    return apiClient<ApiLearningRecommendation[]>(`/resumes/${resumeId}/recommendations`);
+  },
+
+  /**
+   * Re-run AI analysis for an existing resume.
+   * Maps to POST /resumes/{resume_id}/refresh
+   */
+  refreshAnalysis: async (resumeId: string): Promise<ApiAnalysisResult> => {
+    return apiClient<ApiAnalysisResult>(`/resumes/${resumeId}/refresh`, {
+      method: 'POST',
+    });
+  },
+};

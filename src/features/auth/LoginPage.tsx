@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import {
@@ -292,13 +292,13 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E40AF] flex overflow-hidden">
+    <div className="min-h-screen bg-[#0f172a] flex overflow-hidden">
       {" "}
       {/* Left panel ΓÇö premium AI branding with enhanced animations */}{" "}
-      <div className="hidden lg:flex lg:w-[480px] xl:w-[560px] bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E40AF] flex-col justify-between p-12 shrink-0 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-[480px] xl:w-[560px] flex-col justify-between p-12 shrink-0 relative overflow-hidden bg-[#0f172a]">
         {" "}
         {/* Enhanced animated AI background */}{" "}
-        <div className="absolute inset-0 opacity-20">
+        <img src="https://i.ibb.co/nM3CwnCS/Chat-GPT-Image-Sep-8-2026-01-41-03-PM.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" /><div className="absolute inset-0 opacity-20">
           {" "}
           {/* Soft radial glow base */}{" "}
           <motion.div
@@ -452,13 +452,13 @@ export default function LoginPage() {
         </motion.div>{" "}
       </div>{" "}
       {/* Right panel ΓÇö enhanced form */}{" "}
-      <div className="flex-1 flex items-center justify-center p-4 md:p-6 bg-gradient-to-br from-[#2563EB]/80 via-[#1D4ED8]/80 to-[#1E40AF]/80 backdrop-blur-sm">
+      <div className="flex-1 flex items-center justify-center p-4 md:p-6 bg-[#0f172a]">
         {" "}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl"
+          className="w-full max-w-md bg-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700"
         >
           {" "}
           {/* Mobile logo */}{" "}
@@ -470,7 +470,7 @@ export default function LoginPage() {
           >
             {" "}
             <ElevaraLogoMark size={32} />{" "}
-            <span className="text-2xl font-bold text-[#1E293B]">
+            <span className="text-2xl font-bold text-white">
               Elevara
             </span>{" "}
           </motion.div>{" "}
@@ -482,10 +482,10 @@ export default function LoginPage() {
             className="mb-5"
           >
             {" "}
-            <h1 className="text-3xl font-bold text-[#1E293B] tracking-tight">
+            <h1 className="text-3xl font-bold text-white tracking-tight">
               Welcome back
             </h1>{" "}
-            <p className="text-[#64748B] mt-1.5 text-sm font-light leading-snug">
+            <p className="text-slate-400 mt-1.5 text-sm font-light leading-snug">
               Sign in to your account to continue your journey
             </p>{" "}
           </motion.div>{" "}
@@ -517,7 +517,7 @@ export default function LoginPage() {
               {" "}
               <label
                 htmlFor="email"
-                className="label text-xs font-semibold text-[#1E293B]"
+                className="label text-xs font-semibold text-slate-300"
               >
                 Email address
               </label>{" "}
@@ -529,7 +529,7 @@ export default function LoginPage() {
                   autoComplete="email"
                   placeholder="you@example.com"
                   className={cn(
-                    "input input-lg w-full transition-all duration-200 rounded-xl",
+                    "input input-lg w-full transition-all duration-200 rounded-xl bg-slate-700 border-slate-600 text-white placeholder:text-slate-400",
                     validationState.email === "error" &&
                       "input-error border-[#EF4444] bg-[#FEF2F2]",
                     validationState.email === "valid" &&
@@ -567,7 +567,7 @@ export default function LoginPage() {
                 {" "}
                 <label
                   htmlFor="password"
-                  className="label text-xs font-semibold text-[#1E293B] mb-0"
+                  className="label text-xs font-semibold text-slate-300 mb-0"
                 >
                   Password
                 </label>{" "}
@@ -587,7 +587,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   placeholder="ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"
                   className={cn(
-                    "input input-lg w-full pr-14 transition-all duration-200 rounded-xl",
+                    "input input-lg w-full pr-14 transition-all duration-200 rounded-xl bg-slate-700 border-slate-600 text-white placeholder:text-slate-400",
                     validationState.password === "error" &&
                       "input-error border-[#EF4444] bg-[#FEF2F2]",
                     validationState.password === "valid" &&
@@ -649,7 +649,7 @@ export default function LoginPage() {
                 }
                 disabled={isLoading}
               />{" "}
-              <span className="text-xs text-[#475569] font-medium">
+              <span className="text-xs text-slate-400 font-medium">
                 Keep me signed in
               </span>{" "}
             </motion.label>{" "}

@@ -1,1 +1,113 @@
-import { apiClient } from '../../lib/api/client';import type {  ApiApplication,  ApiApplicationCreate,  ApiApplicationInterviewUpdate,  ApiApplicationListResponse,  ApiApplicationNotesUpdate,  ApiApplicationSearchParams,  ApiApplicationStatusUpdate,} from '../../types/api';function buildQueryString(params: ApiApplicationSearchParams): string {  const searchParams = new URLSearchParams();  for (const [key, value] of Object.entries(params)) {    if (value === undefined || value === null) continue;    searchParams.set(key, String(value));  }  const qs = searchParams.toString();  return qs ? `?${qs}` : '';}export const applicationApi = {  /**   * Create a new application (job seeker applies to a job).   * Maps to POST /applications   * NOTE: Do NOT send applicant_id or recruiter_id ΓÇö derived server-side.   */  createApplication: async (data: ApiApplicationCreate): Promise<ApiApplication> => {    return apiClient<ApiApplication>('/applications', { data });  },  /**   * List applications belonging to the current authenticated job seeker.   * Maps to GET /applications   */  listMyApplications: async (    params: ApiApplicationSearchParams = {}  ): Promise<ApiApplicationListResponse> => {    const qs = buildQueryString(params);    return apiClient<ApiApplicationListResponse>(`/applications${qs}`);  },  /**   * Get a single application by ID.   * Maps to GET /applications/{application_id}   */  getApplication: async (applicationId: string): Promise<ApiApplication> => {    return apiClient<ApiApplication>(`/applications/${applicationId}`);  },  /**   * List all applications for recruiter's jobs.   * Maps to GET /applications/recruiter   */  listRecruiterApplications: async (    params: ApiApplicationSearchParams = {}  ): Promise<ApiApplicationListResponse> => {    const qs = buildQueryString(params);    return apiClient<ApiApplicationListResponse>(`/applications/recruiter${qs}`);  },  /**   * Recruiter/admin updates application status.   * Maps to PATCH /applications/{application_id}/status   */  updateApplicationStatus: async (    applicationId: string,    data: ApiApplicationStatusUpdate  ): Promise<ApiApplication> => {    return apiClient<ApiApplication>(`/applications/${applicationId}/status`, {      method: 'PATCH',      data,    });  },  /**   * Job seeker withdraws their application.   * Maps to POST /applications/{application_id}/withdraw   */  withdrawApplication: async (applicationId: string): Promise<ApiApplication> => {    return apiClient<ApiApplication>(`/applications/${applicationId}/withdraw`, {      data: {},    });  },  /**   * Recruiter sets interview details.   * Maps to PATCH /applications/{application_id}/interview   */  updateInterview: async (    applicationId: string,    data: ApiApplicationInterviewUpdate  ): Promise<ApiApplication> => {    return apiClient<ApiApplication>(`/applications/${applicationId}/interview`, {      method: 'PATCH',      data,    });  },  /**   * Job seeker updates their own applicant notes.   * Maps to PATCH /applications/{application_id}/notes   */  updateNotes: async (    applicationId: string,    data: ApiApplicationNotesUpdate  ): Promise<ApiApplication> => {    return apiClient<ApiApplication>(`/applications/${applicationId}/notes`, {      method: 'PATCH',      data,    });  },};
+import { apiClient } from '../../lib/api/client';
+import type {
+  ApiApplication,
+  ApiApplicationCreate,
+  ApiApplicationInterviewUpdate,
+  ApiApplicationListResponse,
+  ApiApplicationNotesUpdate,
+  ApiApplicationSearchParams,
+  ApiApplicationStatusUpdate,
+} from '../../types/api';
+
+function buildQueryString(params: ApiApplicationSearchParams): string {
+  const searchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) continue;
+    searchParams.set(key, String(value));
+  }
+  const qs = searchParams.toString();
+  return qs ? `?${qs}` : '';
+}
+
+export const applicationApi = {
+  /**
+   * Create a new application (job seeker applies to a job).
+   * Maps to POST /applications
+   * NOTE: Do NOT send applicant_id or recruiter_id — derived server-side.
+   */
+  createApplication: async (data: ApiApplicationCreate): Promise<ApiApplication> => {
+    return apiClient<ApiApplication>('/applications', { data });
+  },
+
+  /**
+   * List applications belonging to the current authenticated job seeker.
+   * Maps to GET /applications
+   */
+  listMyApplications: async (
+    params: ApiApplicationSearchParams = {}
+  ): Promise<ApiApplicationListResponse> => {
+    const qs = buildQueryString(params);
+    return apiClient<ApiApplicationListResponse>(`/applications${qs}`);
+  },
+
+  /**
+   * Get a single application by ID.
+   * Maps to GET /applications/{application_id}
+   */
+  getApplication: async (applicationId: string): Promise<ApiApplication> => {
+    return apiClient<ApiApplication>(`/applications/${applicationId}`);
+  },
+
+  /**
+   * List all applications for recruiter's jobs.
+   * Maps to GET /applications/recruiter
+   */
+  listRecruiterApplications: async (
+    params: ApiApplicationSearchParams = {}
+  ): Promise<ApiApplicationListResponse> => {
+    const qs = buildQueryString(params);
+    return apiClient<ApiApplicationListResponse>(`/applications/recruiter${qs}`);
+  },
+
+  /**
+   * Recruiter/admin updates application status.
+   * Maps to PATCH /applications/{application_id}/status
+   */
+  updateApplicationStatus: async (
+    applicationId: string,
+    data: ApiApplicationStatusUpdate
+  ): Promise<ApiApplication> => {
+    return apiClient<ApiApplication>(`/applications/${applicationId}/status`, {
+      method: 'PATCH',
+      data,
+    });
+  },
+
+  /**
+   * Job seeker withdraws their application.
+   * Maps to POST /applications/{application_id}/withdraw
+   */
+  withdrawApplication: async (applicationId: string): Promise<ApiApplication> => {
+    return apiClient<ApiApplication>(`/applications/${applicationId}/withdraw`, {
+      data: {},
+    });
+  },
+
+  /**
+   * Recruiter sets interview details.
+   * Maps to PATCH /applications/{application_id}/interview
+   */
+  updateInterview: async (
+    applicationId: string,
+    data: ApiApplicationInterviewUpdate
+  ): Promise<ApiApplication> => {
+    return apiClient<ApiApplication>(`/applications/${applicationId}/interview`, {
+      method: 'PATCH',
+      data,
+    });
+  },
+
+  /**
+   * Job seeker updates their own applicant notes.
+   * Maps to PATCH /applications/{application_id}/notes
+   */
+  updateNotes: async (
+    applicationId: string,
+    data: ApiApplicationNotesUpdate
+  ): Promise<ApiApplication> => {
+    return apiClient<ApiApplication>(`/applications/${applicationId}/notes`, {
+      method: 'PATCH',
+      data,
+    });
+  },
+};

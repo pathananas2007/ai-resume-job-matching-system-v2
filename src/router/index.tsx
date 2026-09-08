@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+﻿import { lazy, Suspense, useEffect } from "react";
 import {
   createBrowserRouter,
   Navigate,
@@ -216,7 +216,25 @@ function SuspenseWrapper() {
 }
 // Router
 export const router = createBrowserRouter([
-  // Public  {    element: <Suspense fallback={<PageLoader />}><Outlet /></Suspense>,    children: [      { path: '/', element: <LandingPageWithEntry /> },      {        element: <RedirectIfAuth />,        children: [          { path: '/login',    element: <LoginPage /> },          { path: '/register', element: <RegisterPage /> },          { path: '/auth/callback', element: <OAuthCallbackPage /> },        ],      },    ],  },
+  // Public
+  {
+    element: (
+      <Suspense fallback={<PageLoader />}>
+        <Outlet />
+      </Suspense>
+    ),
+    children: [
+      { path: '/', element: <LandingPageWithEntry /> },
+      {
+        element: <RedirectIfAuth />,
+        children: [
+          { path: '/login', element: <LoginPage /> },
+          { path: '/register', element: <RegisterPage /> },
+          { path: '/auth/callback', element: <OAuthCallbackPage /> },
+        ],
+      },
+    ],
+  },
   // Seeker (protected)
   {
     element: <RequireAuth role="seeker" />,

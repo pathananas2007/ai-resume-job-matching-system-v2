@@ -1,1 +1,60 @@
-import { apiClient } from '../../lib/api/client';import type { ApiUser } from '../../types/api';export interface ProfileSuggestion {  field: string;  currentValue: any;  suggestedValue: any;  confidence: number;  reason: string;  source: string;}export interface ProfileSuggestionsResponse {  resume_id: string;  resume_name: string;  generated_at: string;  suggestions: ProfileSuggestion[];  total_suggestions: number;  accepted_count: number;}export const profileApi = {  /**   * Get current user profile   */  getProfile: async (): Promise<ApiUser> => {    return apiClient<ApiUser>('/users/me');  },  /**   * Update user profile with specific fields   */  updateProfile: async (data: Record<string, any>): Promise<ApiUser> => {    return apiClient<ApiUser>('/users/me', {      method: 'PATCH',      data,    });  },  /**   * Get AI-generated profile suggestions from resume analysis   * @param resumeId - ID of the resume to extract suggestions from   */  getProfileSuggestions: async (resumeId: string): Promise<ProfileSuggestionsResponse> => {    return apiClient<ProfileSuggestionsResponse>(`/users/profile/suggestions/${resumeId}`);  },  /**   * Apply accepted profile suggestions to user profile   * @param suggestions - Array of {field, value} objects to apply   */  applyProfileSuggestions: async (suggestions: Array<{field: string; value: any}>): Promise<ApiUser> => {    return apiClient<ApiUser>('/users/profile/apply-suggestions', {      method: 'POST',      data: { suggestions },    });  },};
+import { apiClient } from '../../lib/api/client';
+import type { ApiUser } from '../../types/api';
+
+export interface ProfileSuggestion {
+  field: string;
+  currentValue: any;
+  suggestedValue: any;
+  confidence: number;
+  reason: string;
+  source: string;
+}
+
+export interface ProfileSuggestionsResponse {
+  resume_id: string;
+  resume_name: string;
+  generated_at: string;
+  suggestions: ProfileSuggestion[];
+  total_suggestions: number;
+  accepted_count: number;
+}
+
+export const profileApi = {
+  /**
+   * Get current user profile
+   */
+  getProfile: async (): Promise<ApiUser> => {
+    return apiClient<ApiUser>('/users/me');
+  },
+
+  /**
+   * Update user profile with specific fields
+   */
+  updateProfile: async (data: Record<string, any>): Promise<ApiUser> => {
+    return apiClient<ApiUser>('/users/me', {
+      method: 'PATCH',
+      data,
+    });
+  },
+
+  /**
+   * Get AI-generated profile suggestions from resume analysis
+   * @param resumeId - ID of the resume to extract suggestions from
+   */
+  getProfileSuggestions: async (resumeId: string): Promise<ProfileSuggestionsResponse> => {
+    return apiClient<ProfileSuggestionsResponse>(`/users/profile/suggestions/${resumeId}`);
+  },
+
+  /**
+   * Apply accepted profile suggestions to user profile
+   * @param suggestions - Array of {field, value} objects to apply
+   */
+  applyProfileSuggestions: async (
+    suggestions: Array<{ field: string; value: any }>
+  ): Promise<ApiUser> => {
+    return apiClient<ApiUser>('/users/profile/apply-suggestions', {
+      method: 'POST',
+      data: { suggestions },
+    });
+  },
+};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, FileText, Zap, Target, TrendingUp } from "lucide-react";
 interface ElevataEntryScreenProps {
@@ -35,7 +35,7 @@ interface ElevataEntryScreenProps {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 50%, #F3F4F6 100%)",
+            "linear-gradient(135deg, #0f172a 0%, #0d1b3e 50%, #0f172a 100%)",
         }}
       />{" "}
       {/* LAYER 1: AMBIENT GLOWS - Breathing - Visible on white */}{" "}
@@ -442,7 +442,7 @@ interface ElevataEntryScreenProps {
   const letters = "Elevara".split("");
   return (
     <h1
-      className="text-center font-black text-[#1E293B] tracking-tight leading-none"
+      className="text-center font-black text-white tracking-tight leading-none"
       style={{ fontSize: "clamp(32px, 10vw, 64px)" }}
     >
       {" "}
@@ -478,15 +478,15 @@ interface ElevataEntryScreenProps {
         delay: prefersReducedMotion ? 0 : 2.1,
         ease: "easeOut",
       }}
-      className="text-center text-[#64748B] leading-relaxed"
+      className="text-center text-slate-300 leading-relaxed"
       style={{ fontSize: "clamp(14px, 3.5vw, 18px)", maxWidth: "32rem" }}
     >
       {" "}
-      <span className="text-[#1E293B] font-bold">
+      <span className="text-white font-bold">
         AI-powered career growth,
       </span>{" "}
       <br />{" "}
-      <span className="text-[#1E293B] font-bold">built around you.</span>{" "}
+      <span className="text-white font-bold">built around you.</span>{" "}
     </motion.p>
   );
 }
