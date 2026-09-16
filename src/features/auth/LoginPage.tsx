@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import {
@@ -585,7 +585,7 @@ export default function LoginPage() {
                   id="password"
                   type={showPw ? "text" : "password"}
                   autoComplete="current-password"
-                  placeholder="ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"
+                  placeholder="••••••••"
                   className={cn(
                     "input input-lg w-full pr-14 transition-all duration-200 rounded-xl bg-slate-700 border-slate-600 text-white placeholder:text-slate-400",
                     validationState.password === "error" &&
@@ -656,7 +656,7 @@ export default function LoginPage() {
             {/* Sign in button with enhanced states */}{" "}
             <motion.button
               type="submit"
-              disabled={isLoading || !form.email || !form.password}
+              disabled={isLoading}
               whileHover={
                 !isLoading && form.email && form.password
                   ? { y: -2, scale: 1.01 }
@@ -672,8 +672,6 @@ export default function LoginPage() {
                   form.email &&
                   form.password &&
                   "hover:shadow-lg hover:shadow-blue-200 bg-gradient-to-r from-[#2563EB] to-[#1D4ED8]",
-                (!form.email || !form.password) &&
-                  "opacity-50 cursor-not-allowed bg-gray-400",
               )}
             >
               {" "}

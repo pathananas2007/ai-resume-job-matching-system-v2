@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
 import {
@@ -770,7 +770,7 @@ export default function LandingPage() {
                   </a>{" "}
                 </div>{" "}
                 <p className="text-sm text-[#94A3B8] font-medium">
-                  Γ£ô No credit card required
+                  ✓ No credit card required
                 </p>{" "}
               </motion.div>{" "}
             </div>{" "}

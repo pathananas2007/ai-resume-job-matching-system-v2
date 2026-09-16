@@ -1,1 +1,3 @@
-"""Routes package"""from . import seeker_routes, recruiter_routes# Made with Bob
+"""Routes package"""
+
+from . import seeker_routes, recruiter_routes  # Made with Bob

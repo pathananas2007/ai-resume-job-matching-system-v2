@@ -1,0 +1,1 @@
+import{S as r}from"./index-B1TTvs0K.js";const s={getMe:async()=>r("/users/me"),updateProfile:async e=>r("/users/me",{method:"PATCH",data:e}),updateAppearance:async e=>r("/users/me/appearance",{method:"PATCH",data:e})};export{s as u};
