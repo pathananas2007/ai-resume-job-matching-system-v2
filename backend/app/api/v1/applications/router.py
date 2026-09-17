@@ -1,294 +1,189 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Optional
-from app.core.security import get_current_user, require_role
-from app.models.applications import ApplicationStatus
-from app.models.user import Role, UserModel
-from app.schemas.applications import (
-    ApplicationCreate,
-    ApplicationInterviewUpdate,
-    ApplicationListResponse,
-    ApplicationNotesUpdate,
-    ApplicationResponse,
-    ApplicationStatusUpdate,
+from datetime import datetime, timezone
+from bson import ObjectId
+
+from app.core.database import get_database
+from app.core.security import get_current_user
+from app.models.user import UserModel, Role
+from app.schemas.application import (
+    ApplicationCreate, ApplicationStatusUpdate, ApplicationInterview,
+    ApplicationResponse, ApplicationListResponse
 )
-from app.services.application_service import (
-    create_application,
-    get_application,
-    list_applications,
-    update_application_status,
-    withdraw_application,
-    update_interview,
-    update_applicant_notes,
-)
-from app.services.job_service import get_job
 
-router = APIRouter()
+router = APIRouter(prefix="/applications", tags=["applications"])
 
-
-# ΓöÇΓöÇΓöÇ POST /applications ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.post("", response_model=ApplicationResponse, status_code=status.HTTP_201_CREATED)
-async def create_application_endpoint(
-    payload: ApplicationCreate,
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.JOB_SEEKER)),
-):
-    """Job seeker applies to a job. applicant_id and recruiter_id are derived server-side."""
-
-    # Fetch job to get recruiter_id
-
-    job = await get_job(payload.job_id)
-
+@router.post("", response_model=ApplicationResponse)
+async def create_application(app_data: ApplicationCreate, current_user: UserModel = Depends(get_current_user)):
+    if current_user.role != Role.JOB_SEEKER:
+        raise HTTPException(status_code=403, detail="Only job seekers can apply")
+        
+    db = get_database()
+    
+    # Check if job exists
+    job = await db["jobs"].find_one({"_id": ObjectId(app_data.job_id)})
     if not job:
-
         raise HTTPException(status_code=404, detail="Job not found")
+        
+    app_dict = app_data.model_dump()
+    app_dict["applicant_id"] = str(current_user.id)
+    app_dict["recruiter_id"] = job.get("recruiter_id", "")
+    app_dict["status"] = "applied"
+    app_dict["created_at"] = datetime.now(timezone.utc)
+    app_dict["updated_at"] = datetime.now(timezone.utc)
+    app_dict["match_score"] = 80.0  # Mock AI score
+    
+    result = await db["applications"].insert_one(app_dict)
+    
+    created_app = await db["applications"].find_one({"_id": result.inserted_id})
+    created_app["id"] = str(created_app.pop("_id"))
+    
+    return ApplicationResponse(**created_app)
 
-    if not job.is_active:
+@router.get("", response_model=ApplicationListResponse)
+async def list_seeker_applications(
+    skip: int = 0, limit: int = 20,
+    current_user: UserModel = Depends(get_current_user)
+):
+    if current_user.role != Role.JOB_SEEKER:
+        raise HTTPException(status_code=403, detail="Only job seekers can use this route")
+        
+    db = get_database()
+    query = {"applicant_id": str(current_user.id)}
+    
+    cursor = db["applications"].find(query).skip(skip).limit(limit).sort("created_at", -1)
+    applications = await cursor.to_list(length=limit)
+    total = await db["applications"].count_documents(query)
+    
+    for app in applications:
+        app["id"] = str(app.pop("_id"))
+        
+    return ApplicationListResponse(
+        applications=[ApplicationResponse(**a) for a in applications],
+        total=total,
+        page=(skip // limit) + 1,
+        pages=(total + limit - 1) // limit
+    )
 
-        raise HTTPException(
-            status_code=410, detail="Job is no longer accepting applications"
-        )
+@router.get("/recruiter", response_model=ApplicationListResponse)
+async def list_recruiter_applications(
+    skip: int = 0, limit: int = 20,
+    current_user: UserModel = Depends(get_current_user)
+):
+    if current_user.role != Role.RECRUITER:
+        raise HTTPException(status_code=403, detail="Only recruiters can use this route")
+        
+    db = get_database()
+    query = {"recruiter_id": str(current_user.id)}
+    
+    cursor = db["applications"].find(query).skip(skip).limit(limit).sort("created_at", -1)
+    applications = await cursor.to_list(length=limit)
+    total = await db["applications"].count_documents(query)
+    
+    for app in applications:
+        app["id"] = str(app.pop("_id"))
+        
+    return ApplicationListResponse(
+        applications=[ApplicationResponse(**a) for a in applications],
+        total=total,
+        page=(skip // limit) + 1,
+        pages=(total + limit - 1) // limit
+    )
 
+@router.get("/{application_id}", response_model=ApplicationResponse)
+async def get_application(application_id: str, current_user: UserModel = Depends(get_current_user)):
+    db = get_database()
     try:
-
-        application = await create_application(
-            applicant_id=current_user.id,
-            recruiter_id=job.recruiter_id,
-            payload=payload,
-        )
-
-    except ValueError as e:
-
-        if "duplicate" in str(e):
-
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="You have already applied to this job.",
-            )
-
-        raise HTTPException(status_code=400, detail=str(e))
-
-    return application
-
-
-# ΓöÇΓöÇΓöÇ GET /applications (seeker: own applications) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.get("", response_model=ApplicationListResponse)
-async def list_my_applications_endpoint(
-    status: Optional[ApplicationStatus] = None,
-    job_id: Optional[str] = None,
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.JOB_SEEKER, Role.ADMIN)),
-):
-    """List applications belonging to the authenticated job seeker."""
-
-    applicant_id = current_user.id if current_user.role == Role.JOB_SEEKER else None
-
-    items, total = await list_applications(
-        applicant_id=applicant_id,
-        job_id=job_id,
-        status=status,
-        page=page,
-        page_size=page_size,
-    )
-
-    total_pages = max(1, (total + page_size - 1) // page_size)
-
-    return ApplicationListResponse(
-        items=items,
-        page=page,
-        page_size=page_size,
-        total=total,
-        total_pages=total_pages,
-    )
-
-
-# ΓöÇΓöÇΓöÇ GET /applications/recruiter (recruiter: view applications for their jobs) @router.get("/recruiter", response_model=ApplicationListResponse)
-async def list_recruiter_applications_endpoint(
-    job_id: Optional[str] = None,
-    status: Optional[ApplicationStatus] = None,
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.RECRUITER, Role.ADMIN)),
-):
-    """List all applications for jobs posted by this recruiter."""
-
-    recruiter_id = current_user.id if current_user.role == Role.RECRUITER else None
-
-    items, total = await list_applications(
-        recruiter_id=recruiter_id,
-        job_id=job_id,
-        status=status,
-        page=page,
-        page_size=page_size,
-    )
-
-    total_pages = max(1, (total + page_size - 1) // page_size)
-
-    return ApplicationListResponse(
-        items=items,
-        page=page,
-        page_size=page_size,
-        total=total,
-        total_pages=total_pages,
-    )
-
-
-# ΓöÇΓöÇΓöÇ GET /applications/{application_id} ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.get("/{application_id}", response_model=ApplicationResponse)
-async def get_application_endpoint(
-    application_id: str,
-    current_user: UserModel = Depends(get_current_user),
-):
-    """Retrieve a single application. Seeker can only see their own."""
-
-    application = await get_application(application_id)
-
-    if not application:
-
+        app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+        
+    if not app:
         raise HTTPException(status_code=404, detail="Application not found")
-
-    # Access control: seekers only see their own; recruiters only see their jobs; admins see all
-
-    if (
-        current_user.role == Role.JOB_SEEKER
-        and application.applicant_id != current_user.id
-    ):
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    if (
-        current_user.role == Role.RECRUITER
-        and application.recruiter_id != current_user.id
-    ):
-
+        
+    if app.get("applicant_id") != str(current_user.id) and app.get("recruiter_id") != str(current_user.id):
         raise HTTPException(status_code=403, detail="Not authorized")
+        
+    app["id"] = str(app.pop("_id"))
+    return ApplicationResponse(**app)
 
-    return application
-
-
-# ΓöÇΓöÇΓöÇ PATCH /applications/{application_id}/status ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.patch("/{application_id}/status", response_model=ApplicationResponse)
-async def update_status_endpoint(
-    application_id: str,
-    payload: ApplicationStatusUpdate,
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.RECRUITER, Role.ADMIN)),
+@router.put("/{application_id}/status", response_model=ApplicationResponse)
+async def update_application_status(
+    application_id: str, 
+    status_update: ApplicationStatusUpdate, 
+    current_user: UserModel = Depends(get_current_user)
 ):
-    """Recruiter or admin updates application status."""
-
-    application = await get_application(application_id)
-
-    if not application:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    if (
-        current_user.role == Role.RECRUITER
-        and application.recruiter_id != current_user.id
-    ):
-
-        raise HTTPException(status_code=403, detail="Not authorized")
-
-    updated = await update_application_status(application_id, payload.status)
-
-    if not updated:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    return updated
-
-
-# ΓöÇΓöÇΓöÇ POST /applications/{application_id}/withdraw ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.post("/{application_id}/withdraw", response_model=ApplicationResponse)
-async def withdraw_application_endpoint(
-    application_id: str,
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.JOB_SEEKER)),
-):
-    """Job seeker withdraws their own application."""
-
-    application = await get_application(application_id)
-
-    if not application:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    if application.applicant_id != current_user.id:
-
-        raise HTTPException(status_code=403, detail="Not authorized")
-
-    if application.status == ApplicationStatus.WITHDRAWN:
-
-        raise HTTPException(status_code=409, detail="Application already withdrawn")
-
-    updated = await withdraw_application(application_id, current_user.id)
-
-    if not updated:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    return updated
-
-
-# ΓöÇΓöÇΓöÇ PATCH /applications/{application_id}/interview ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.patch("/{application_id}/interview", response_model=ApplicationResponse)
-async def update_interview_endpoint(
-    application_id: str,
-    payload: ApplicationInterviewUpdate,
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.RECRUITER, Role.ADMIN)),
-):
-    """Recruiter sets interview details."""
-
-    application = await get_application(application_id)
-
-    if not application:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    if (
-        current_user.role == Role.RECRUITER
-        and application.recruiter_id != current_user.id
-    ):
-
-        raise HTTPException(status_code=403, detail="Not authorized")
-
-    updated = await update_interview(
-        application_id,
-        payload.interview_date,
-        payload.interview_time,
-        payload.interview_mode,
-        payload.interview_link,
+    if current_user.role != Role.RECRUITER:
+        raise HTTPException(status_code=403, detail="Only recruiters can update status")
+        
+    db = get_database()
+    try:
+        app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+        
+    if not app or app.get("recruiter_id") != str(current_user.id):
+        raise HTTPException(status_code=404, detail="Application not found or unauthorized")
+        
+    await db["applications"].update_one(
+        {"_id": ObjectId(application_id)},
+        {"$set": {"status": status_update.status, "updated_at": datetime.now(timezone.utc)}}
     )
+    
+    updated_app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    updated_app["id"] = str(updated_app.pop("_id"))
+    return ApplicationResponse(**updated_app)
 
-    if not updated:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    return updated
-
-
-# ΓöÇΓöÇΓöÇ PATCH /applications/{application_id}/notes ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.patch("/{application_id}/notes", response_model=ApplicationResponse)
-async def update_notes_endpoint(
-    application_id: str,
-    payload: ApplicationNotesUpdate,
-    current_user: UserModel = Depends(get_current_user),
-    _: None = Depends(require_role(Role.JOB_SEEKER)),
-):
-    """Job seeker updates their own applicant notes."""
-
-    application = await get_application(application_id)
-
-    if not application:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    if application.applicant_id != current_user.id:
-
-        raise HTTPException(status_code=403, detail="Not authorized")
-
-    updated = await update_applicant_notes(
-        application_id, current_user.id, payload.applicant_notes
+@router.post("/{application_id}/withdraw", response_model=ApplicationResponse)
+async def withdraw_application(application_id: str, current_user: UserModel = Depends(get_current_user)):
+    if current_user.role != Role.JOB_SEEKER:
+        raise HTTPException(status_code=403, detail="Only job seekers can withdraw")
+        
+    db = get_database()
+    try:
+        app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+        
+    if not app or app.get("applicant_id") != str(current_user.id):
+        raise HTTPException(status_code=404, detail="Application not found or unauthorized")
+        
+    await db["applications"].update_one(
+        {"_id": ObjectId(application_id)},
+        {"$set": {"status": "withdrawn", "updated_at": datetime.now(timezone.utc)}}
     )
+    
+    updated_app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    updated_app["id"] = str(updated_app.pop("_id"))
+    return ApplicationResponse(**updated_app)
 
-    if not updated:
-
-        raise HTTPException(status_code=404, detail="Application not found")
-
-    return updated
+@router.post("/{application_id}/interview", response_model=ApplicationResponse)
+async def schedule_interview(
+    application_id: str, 
+    interview_data: ApplicationInterview, 
+    current_user: UserModel = Depends(get_current_user)
+):
+    if current_user.role != Role.RECRUITER:
+        raise HTTPException(status_code=403, detail="Only recruiters can schedule interviews")
+        
+    db = get_database()
+    try:
+        app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+        
+    if not app or app.get("recruiter_id") != str(current_user.id):
+        raise HTTPException(status_code=404, detail="Application not found or unauthorized")
+        
+    await db["applications"].update_one(
+        {"_id": ObjectId(application_id)},
+        {"$set": {
+            "status": "interview_scheduled", 
+            "interview_details": interview_data.model_dump(),
+            "updated_at": datetime.now(timezone.utc)
+        }}
+    )
+    
+    updated_app = await db["applications"].find_one({"_id": ObjectId(application_id)})
+    updated_app["id"] = str(updated_app.pop("_id"))
+    return ApplicationResponse(**updated_app)

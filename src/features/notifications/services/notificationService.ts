@@ -1,4 +1,4 @@
-import { AppNotification, NotificationFilter } from "./types";
+import { AppNotification, NotificationFilter } from "../types";
 import { mockNotifications } from "../mockData"; /* Simulated delay to mimic network request */
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export class NotificationService {

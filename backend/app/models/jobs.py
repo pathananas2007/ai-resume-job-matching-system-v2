@@ -1,42 +1,14 @@
 from typing import List, Optional
-from datetime import datetime
-from .base import BaseDocumentModel
+from pydantic import Field
+from app.models.base import MongoModel
 
-
-class JobModel(BaseDocumentModel):
-
-    recruiter_id: str
-
-    company_name: str
-
+class JobModel(MongoModel):
     title: str
-
-    description: str
-
+    company: str
     location: str
-
-    work_mode: str
-
-    employment_type: str
-
-    experience_level: str
-
-    salary_min: Optional[float] = None
-
-    salary_max: Optional[float] = None
-
-    currency: str = "USD"
-
-    skills: List[str] = []
-
-    industry: str
-
-    company_size: Optional[str] = None
-
-    benefits: List[str] = []
-
-    application_deadline: Optional[datetime] = None
-
-    is_active: bool = True
-
-    deactivated_at: Optional[datetime] = None
+    description: str
+    requirements: List[str]
+    salary_range: Optional[str] = None
+    job_type: Optional[str] = None
+    status: str = "open"
+    recruiter_id: str

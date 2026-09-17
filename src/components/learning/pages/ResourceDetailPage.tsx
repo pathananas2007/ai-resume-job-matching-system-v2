@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -17,7 +17,7 @@ export function ResourceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const resource = mockResources.find((r) => r.id === id);
-  const [isSaved, setIsSaved] = useState(resource?.saved || false);
+  const [isSaved, setIsSaved] = useState((resource as any)?.saved || false);
   if (!resource) {
     return (
       <div className="flex h-64 flex-col items-center justify-center space-y-4">

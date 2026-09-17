@@ -1,125 +1,40 @@
+from pydantic import BaseModel
+from typing import List, Optional, Dict, Any
 from datetime import datetime
-from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict
-from app.models.resumes import ResumeStatus, AnalysisStatus
-class ResumeResponse(BaseModel):
 
+class ResumeUploadResponse(BaseModel):
+    id: str
+    message: str
+    status: str
 
+class ResumeBase(BaseModel):
+    title: str
+    content: str
+    parsed_data: Optional[Dict[str, Any]] = None
+    status: str = "active"
 
-    id: Optional[str] = Field(alias="_id")
-
-
-
+class ResumeResponse(ResumeBase):
+    id: str
     user_id: str
-
-
-
-    file_name: str
-
-
-
-    file_type: str
-
-
-
-    file_size: int
-
-
-
-    original_file_name: str
-
-
-
-    mime_type: str
-
-
-
-        status: ResumeStatus
-
-
-
-    is_active: bool
-
-
-
-    deactivated_at: Optional[datetime] = None
-
-
-
-        analysis_status: AnalysisStatus
-
-
-
-    analysis_id: Optional[str] = None
-
-
-
-        uploaded_at: datetime
-
-
-
     created_at: datetime
-
-
-
     updated_at: datetime
 
-
-
-    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
-class ResumeUploadResponse(ResumeResponse):
-
-
-
-    pass
 class ResumeListResponse(BaseModel):
-
-
-
-    items: List[ResumeResponse]
-
-
-
-    page: int
-
-
-
-    page_size: int
-
-
-
+    resumes: List[ResumeResponse]
     total: int
 
+class AnalysisResult(BaseModel):
+    score: float
+    feedback: List[str]
+    strengths: List[str]
+    weaknesses: List[str]
 
+class SkillGapAnalysis(BaseModel):
+    missing_skills: List[str]
+    suggested_courses: List[str]
 
-    total_pages: int
-
-
-
-    model_config = ConfigDict(from_attributes=True)
-class ResumeUpdate(BaseModel):
-
-
-
-    # Only safe fields that the client is allowed to update
-
-
-
-    status: Optional[ResumeStatus] = None
-
-
-
-    is_active: Optional[bool] = None
-
-
-
-    model_config = ConfigDict(from_attributes=True)
-class ResumeAnalysisStatus(BaseModel):
-
-
-
-    analysis_status: AnalysisStatus
-
-
-
-    analysis_id: Optional[str] = None
+class LearningRecommendation(BaseModel):
+    title: str
+    url: str
+    provider: str
+    skill: str

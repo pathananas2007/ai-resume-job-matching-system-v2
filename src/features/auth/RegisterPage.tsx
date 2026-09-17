@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -17,8 +17,10 @@ import { useToast } from "../../components/ui/Toast";
 import { cn } from "../../lib/utils";
 import type { UserRole, User as AppUser } from "../../types";
 import { ElevaraLogoMark } from "../../components/ui/ElevaraLogo";
-import { authApi } from "../../services/api/authApi";
 import { userApi } from "../../services/api/userApi";
+import { auth } from "../../config/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { apiClient } from "../../lib/api/client";
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { setUser, setLoading, isLoading } = useAuthStore();
@@ -140,50 +142,30 @@ export default function RegisterPage() {
     setLoading(true);
     setErrors({});
     /* Clear previous errors */ try {
-      /* 1. Register with backend */ const tokenResponse =
-        await authApi.register({
+      /* 1. Register with Firebase */ 
+      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      
+      /* 2. Sync with backend */
+      await apiClient('/auth/sync', {
+        method: 'POST',
+        data: {
           full_name: form.full_name,
           email: form.email,
-          password: form.password,
           role: role || "seeker",
-        });
-      /* 2. Store token in authStore IMMEDIATELY so subsequent API calls use it */ const {
-        setUser: setUserInStore,
-      } = useAuthStore.getState();
-      setUserInStore(
-        {
-          id: "",
-          email: "",
-          full_name: "",
-          role: role || "seeker",
-          is_verified: true,
-          created_at: "",
-        },
-        tokenResponse.access_token,
-      );
-      /* 3. Fetch the authenticated user's data (now with token available in authStore) */ const userResponse =
-        await userApi.getMe();
-      /* 4. Transform API user to app User type */ const appUser: AppUser = {
-        id: userResponse.id || userResponse._id || "",
-        email: userResponse.email,
-        full_name: userResponse.full_name || userResponse.name || "",
-        role: (userResponse.role?.toLowerCase() === "recruiter"
-          ? "recruiter"
-          : "seeker") as "seeker" | "recruiter",
-        is_verified: true,
-        created_at: userResponse.created_at || new Date().toISOString(),
-      };
-      /* 5. Update with real user data */ setUser(
-        appUser,
-        tokenResponse.access_token,
-      );
+          company_name: form.company_name
+        }
+      });
+      
+      /* Firebase state listener in App.tsx will automatically handle fetching the profile and updating the store */
+      
       toast(
-        `Welcome, ${appUser.full_name}!`,
+        `Account created successfully!`,
         "success",
-        "Account created successfully",
+        "Registration successful",
       );
-      /* 6. Navigate to appropriate dashboard based on backend role */ navigate(
-        appUser.role === "recruiter"
+      /* 6. Navigate to appropriate dashboard based on selected role */ 
+      navigate(
+        role === "recruiter"
           ? "/recruiter/dashboard"
           : "/seeker/dashboard",
       );

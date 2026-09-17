@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import {
@@ -1347,31 +1347,27 @@ export default function SeekerDashboard() {
         <div className="hidden md:block overflow-x-auto">
           {" "}
           <table className="w-full">
-            {" "}
             <thead>
-              {" "}
               <tr className="border-b border-[#F1F5F9]">
-                {" "}
                 <th className="text-left px-6 py-3 text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Position
-                </th>{" "}
+                </th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Company
-                </th>{" "}
+                </th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Match
-                </th>{" "}
+                </th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Status
-                </th>{" "}
+                </th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Applied
-                </th>{" "}
-                <th className="px-6 py-3" />{" "}
-              </tr>{" "}
-            </thead>{" "}
+                </th>
+                <th className="px-6 py-3" />
+              </tr>
+            </thead>
             <tbody className="divide-y divide-[#F1F5F9]">
-              {" "}
               {recentApps.length > 0 ? (
                 recentApps.map((app, i) => (
                   <motion.tr

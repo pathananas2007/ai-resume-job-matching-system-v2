@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Upload,
   FileText,
@@ -160,6 +160,7 @@ function ResumeList({
   analyzingId,
   highlightResumeId,
   onHighlightClear,
+  onRefreshAnalysis,
 }: {
   resumes: ApiResume[];
   isLoading: boolean;
@@ -448,7 +449,7 @@ export default function ResumePage() {
         /* Backend behavior: Upload to API */ const response =
           await resumeApi.uploadResume(file);
         /* Extract and store the resume_id from response */ const resumeId =
-          response?.resume_id || response?._id;
+          response?.resume_id || (response as any)?._id;
         if (resumeId) {
           setLastUploadedResumeId(resumeId);
         }
@@ -534,30 +535,31 @@ export default function ResumePage() {
             : "Reject",
       confidenceScore: Math.min(99, result.ats_score + 10),
       scores: {
-        technical: Math.round(result.ats_score * 0.9),
         experience: Math.round(result.ats_score * 0.85),
         education: Math.round(result.ats_score * 0.8),
         skills: result.ats_score,
         overall: result.ats_score,
       },
       competencyAnalysis: [],
-      skillBreakdown: result.skills.technical.map((s) => ({
-        name: s,
-        level: "strong" as const,
-        score: 80,
+      skillBreakdown: result.skills.technical.map((s: string) => ({
+        skill: s,
+        status: "MATCH" as const,
+        candidateLevel: 5,
+        requiredLevel: 4,
       })),
       matchingSkills: allSkills.slice(0, 10),
-      criticalGaps: result.skill_gaps.map((g) => ({
+      criticalGaps: result.skill_gaps.map((g: any) => ({
         skill: g.skill,
-        importance: g.importance,
-        suggestion: g.reason || "",
+        classification: "Secondary" as const,
+        detail: g.reason || "",
       })),
       strengths: result.recommendations.slice(0, 3),
-      weaknesses: result.skill_gaps.map((g) => g.skill),
-      actionPlan: result.recommendations.map((r, i) => ({
-        step: i + 1,
-        action: r,
-        priority: i === 0 ? ("high" as const) : ("medium" as const),
+      weaknesses: result.skill_gaps.map((g: any) => g.skill),
+      actionPlan: result.recommendations.map((r: string, i: number) => ({
+        skill: "General",
+        timeEstimate: "1 week",
+        difficulty: "Medium" as const,
+        impact: i === 0 ? ("High" as const) : ("Medium" as const),
       })),
       explanation:
         result.summary ||

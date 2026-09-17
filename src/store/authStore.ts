@@ -1,48 +1,86 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { User } from "../types";
+import { auth } from "../config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { apiClient } from "../lib/api/client";
+
 interface AuthStore {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   _hasHydrated: boolean;
-  setUser: (user: User, token: string) => void;
+  setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   logout: () => void;
   updateUser: (partial: Partial<User>) => void;
   setHasHydrated: (v: boolean) => void;
+  initFirebaseAuth: () => void;
 }
+
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
-      token: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: true, // Start loading while Firebase checks auth state
       _hasHydrated: false,
-      setUser: (user, token) =>
-        set({ user, token, isAuthenticated: true, isLoading: false }),
+      setUser: (user) =>
+        set({ user, isAuthenticated: !!user, isLoading: false }),
       setLoading: (isLoading) => set({ isLoading }),
       logout: () => {
-        /* Clear storage and state */ set({
+        auth.signOut();
+        set({
           user: null,
-          token: null,
           isAuthenticated: false,
           isLoading: false,
-        }); /* Optionally: clear all app data, sessions, etc. */
+        });
       },
       updateUser: (partial) =>
         set((state) => ({
           user: state.user ? { ...state.user, ...partial } : null,
         })),
       setHasHydrated: (v) => set({ _hasHydrated: v }),
+      initFirebaseAuth: () => {
+        onAuthStateChanged(auth, async (firebaseUser) => {
+          if (firebaseUser) {
+            try {
+              // Fetch user profile from backend
+              const userProfile = await apiClient<any>('/auth/me');
+              // Transform backend response to frontend User type
+              const user: User = {
+                id: userProfile.id || '',
+                email: userProfile.email || firebaseUser.email || '',
+                full_name: userProfile.full_name || userProfile.name || firebaseUser.displayName || '',
+                role: (userProfile.role?.toLowerCase() === 'recruiter' ? 'recruiter' : 'seeker') as 'seeker' | 'recruiter',
+                is_verified: userProfile.is_verified ?? true,
+                created_at: userProfile.created_at || new Date().toISOString(),
+              };
+              set({ user, isAuthenticated: true, isLoading: false });
+            } catch (error) {
+              console.error("Failed to fetch user profile", error);
+              // User is authenticated in Firebase but not in backend yet (new registration)
+              // Set basic info from Firebase user
+              const basicUser: User = {
+                id: firebaseUser.uid,
+                email: firebaseUser.email || '',
+                full_name: firebaseUser.displayName || '',
+                role: 'seeker',
+                is_verified: firebaseUser.emailVerified,
+                created_at: new Date().toISOString(),
+              };
+              set({ user: basicUser, isAuthenticated: true, isLoading: false });
+            }
+          } else {
+            set({ user: null, isAuthenticated: false, isLoading: false });
+          }
+        });
+      }
     }),
     {
       name: "elevara-auth",
       partialize: (state) => ({
         user: state.user,
-        token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
       onRehydrateStorage: () => (state) => {
@@ -51,3 +89,4 @@ export const useAuthStore = create<AuthStore>()(
     },
   ),
 );
+

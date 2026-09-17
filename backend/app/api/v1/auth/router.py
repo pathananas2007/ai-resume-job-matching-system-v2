@@ -1,409 +1,87 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.responses import RedirectResponse
-from app.core.database import get_database
-from app.core.security import get_password_hash, verify_password, create_access_token, get_current_user
-from app.models.user import UserModel, Role
+# app/api/v1/auth/router.py
+from fastapi import APIRouter, HTTPException, status, Depends, Request
 from pydantic import BaseModel
-from .oauth import (
+from typing import Optional
 
+from app.schemas.user import UserResponse
+from app.models.user import UserModel, Role
+from app.core.security import get_current_user
+from app.core.database import get_database
 
+router = APIRouter(prefix="/auth", tags=["auth"])
 
-    GoogleOAuth, GitHubOAuth, OAuthState, OAuthUser, find_or_create_user)
-router = APIRouter()
-
-class UserRegister(BaseModel):
-
-
-
+class SyncRequest(BaseModel):
     full_name: str
-
-
-
     email: str
-
-
-
-    password: str
-
-
-
-    role: Role = Role.JOB_SEEKER
-@router.post("/register")
-async def register(payload: UserRegister):
-
-
-
-    db = get_database()
-
-
-
-    existing = await db["users"].find_one({"email": payload.email})
-
-
-
-    if existing:
-
-
-
-        raise HTTPException(status_code=400, detail="Email already registered")
-
-
-
-        user_doc = payload.dict(exclude={"password"})
-
-
-
-    user_doc["name"] = user_doc.pop("full_name", payload.full_name)  # Map full_name to name
-
-
-
-    user_doc["hashed_password"] = get_password_hash(payload.password)
-
-
-
-        result = await db["users"].insert_one(user_doc)
-
-
-
-    user_doc["_id"] = str(result.inserted_id)
-
-
-
-        # Generate token for automatic login after registration
-
-
-
-    access_token = create_access_token(subject=str(user_doc["_id"]))
-
-
-
-        return {"access_token": access_token, "token_type": "bearer"}
-@router.post("/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-
-
-
-    db = get_database()
-
-
-
-    user_doc = await db["users"].find_one({"email": form_data.username})
-
-
-
-    if not user_doc:
-
-
-
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-
-
-
-        # Verify password ΓÇö handle missing or invalid hash
-
-
-
-    stored_hash = user_doc.get("hashed_password", "")
-
-
-
-    if not stored_hash:
-
-
-
-        # No password set for this user (OAuth-only account or legacy issue)
-
-
-
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-
-
-
-        try:
-
-
-
-        if not verify_password(form_data.password, stored_hash):
-
-
-
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
-
-
-
+    role: str
+    company_name: Optional[str] = None
+
+from fastapi.security import OAuth2PasswordBearer
+from app.core.firebase import verify_token
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+
+@router.post("/sync", response_model=UserResponse)
+async def sync_user(sync_data: SyncRequest, token: str = Depends(oauth2_scheme)):
+    """
+    Sync a newly registered Firebase user with MongoDB.
+    """
+    try:
+        payload = verify_token(token)
+        user_uid: str = payload.get("uid")
+        if not user_uid:
+            raise HTTPException(status_code=401, detail="Invalid token")
     except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    db = get_database()
+    
+    # Check if user already exists
+    existing_user = await db["users"].find_one({"firebase_uid": user_uid})
+    if existing_user:
+        existing_user["id"] = str(existing_user["_id"])
+        return UserResponse(**existing_user)
+
+    existing_user_by_email = await db["users"].find_one({"email": sync_data.email})
+    if existing_user_by_email:
+        # Link firebase_uid
+        await db["users"].update_one({"_id": existing_user_by_email["_id"]}, {"$set": {"firebase_uid": user_uid}})
+        existing_user_by_email["id"] = str(existing_user_by_email["_id"])
+        return UserResponse(**existing_user_by_email)
+
+    try:
+        role = Role(sync_data.role.upper())
+    except ValueError:
+        role = Role.JOB_SEEKER
+        
+    user_dict = {
+        "firebase_uid": user_uid,
+        "name": sync_data.full_name,
+        "email": sync_data.email,
+        "role": role,
+        "skills": [],
+        "education": [],
+        "experience": [],
+        "projects": [],
+        "certifications": [],
+        "social_links": {},
+        "career_targets": {}
+    }
+    
+    user = UserModel(**user_dict)
+    
+    result = await db["users"].insert_one(user.model_dump(by_alias=True, exclude={"id"}))
+    user_dict["_id"] = result.inserted_id
+    user_dict["id"] = str(result.inserted_id)
+    
+    return UserResponse(**user_dict)
+
+@router.get("/me", response_model=UserResponse)
+async def read_users_me(current_user: UserModel = Depends(get_current_user)):
+    user_dict = current_user.model_dump()
+    user_dict["id"] = str(current_user.id)
+    return UserResponse(**user_dict)
 
-
-
-        # Password hash is invalid/corrupted
-
-
-
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-
-
-
-        access_token = create_access_token(subject=str(user_doc["_id"]))
-
-
-
-    return {"access_token": access_token, "token_type": "bearer"}
-@router.get("/me", response_model=UserModel)
-async def get_current_user_info(current_user: UserModel = Depends(get_current_user)):
-
-
-
-    """Get current authenticated user information"""
-
-
-
-    return current_user
-# ΓöÇΓöÇΓöÇ GOOGLE OAUTH ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.get("/oauth/google/authorize")
-async def google_authorize():
-
-
-
-    """Initiate Google OAuth flow"""
-
-
-
-    if not GoogleOAuth.is_configured():
-
-
-
-        raise HTTPException(status_code=503, detail="Google OAuth is not configured")
-
-
-
-        state = OAuthState.generate()
-
-
-
-    auth_url = GoogleOAuth.get_authorization_url(state)
-
-
-
-        return {"auth_url": auth_url, "state": state}
-@router.get("/oauth/google/callback")
-async def google_callback(code: str, state: str):
-
-
-
-    """Handle Google OAuth callback"""
-
-
-
-    if not GoogleOAuth.is_configured():
-
-
-
-        raise HTTPException(status_code=503, detail="Google OAuth is not configured")
-
-
-
-        # Validate state to prevent CSRF
-
-
-
-    if not OAuthState.validate(state):
-
-
-
-        raise HTTPException(status_code=400, detail="Invalid or expired state parameter. Please try signing in again.")
-
-
-
-        OAuthState.consume(state)
-
-
-
-        # Exchange code for token
-
-
-
-    access_token = await GoogleOAuth.exchange_code(code)
-
-
-
-    if not access_token:
-
-
-
-        raise HTTPException(status_code=400, detail="Failed to exchange authorization code. Please try again.")
-
-
-
-        # Get user info
-
-
-
-    oauth_user = await GoogleOAuth.get_user_info(access_token)
-
-
-
-    if not oauth_user or not oauth_user.email:
-
-
-
-        raise HTTPException(status_code=400, detail="Failed to retrieve your Google account information.")
-
-
-
-        # Find or create user
-
-
-
-    user = await find_or_create_user(oauth_user)
-
-
-
-    if not user:
-
-
-
-        raise HTTPException(status_code=500, detail="Failed to create user account")
-
-
-
-        # Generate Elevara JWT
-
-
-
-    elevara_token = create_access_token(subject=str(user.id))
-
-
-
-        # Redirect to frontend with token
-
-
-
-    return RedirectResponse(
-
-
-
-        url=f"http://localhost:3001/auth/callback?token={elevara_token}&provider=google"    )
-# ΓöÇΓöÇΓöÇ GITHUB OAUTH ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ@router.get("/oauth/github/authorize")
-async def github_authorize():
-
-
-
-    """Initiate GitHub OAuth flow"""
-
-
-
-    if not GitHubOAuth.is_configured():
-
-
-
-        raise HTTPException(status_code=503, detail="GitHub OAuth is not configured")
-
-
-
-        state = OAuthState.generate()
-
-
-
-    auth_url = GitHubOAuth.get_authorization_url(state)
-
-
-
-        return {"auth_url": auth_url, "state": state}
-@router.get("/oauth/github/callback")
-async def github_callback(code: str, state: str):
-
-
-
-    """Handle GitHub OAuth callback"""
-
-
-
-    if not GitHubOAuth.is_configured():
-
-
-
-        raise HTTPException(status_code=503, detail="GitHub OAuth is not configured")
-
-
-
-        # Validate state to prevent CSRF
-
-
-
-    if not OAuthState.validate(state):
-
-
-
-        raise HTTPException(status_code=400, detail="Invalid or expired state parameter. Please try signing in again.")
-
-
-
-        OAuthState.consume(state)
-
-
-
-        # Exchange code for token
-
-
-
-    access_token = await GitHubOAuth.exchange_code(code)
-
-
-
-    if not access_token:
-
-
-
-        raise HTTPException(status_code=400, detail="Failed to exchange authorization code. Please try again.")
-
-
-
-        # Get user info
-
-
-
-    oauth_user = await GitHubOAuth.get_user_info(access_token)
-
-
-
-    if not oauth_user or not oauth_user.email:
-
-
-
-        raise HTTPException(status_code=400, detail="Failed to retrieve your GitHub account information.")
-
-
-
-        # Find or create user
-
-
-
-    user = await find_or_create_user(oauth_user)
-
-
-
-    if not user:
-
-
-
-        raise HTTPException(status_code=500, detail="Failed to create user account")
-
-
-
-        # Generate Elevara JWT
-
-
-
-    elevara_token = create_access_token(subject=str(user.id))
-
-
-
-        # Redirect to frontend with token
-
-
-
-    return RedirectResponse(
-
-
-
-        url=f"http://localhost:3001/auth/callback?token={elevara_token}&provider=github"    )

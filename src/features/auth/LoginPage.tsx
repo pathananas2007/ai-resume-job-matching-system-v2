@@ -13,10 +13,10 @@ import {
 import { ElevaraLogoMark } from "../../components/ui/ElevaraLogo";
 import { useAuthStore } from "../../store/authStore";
 import { useToast } from "../../components/ui/Toast";
-import { authApi } from "../../services/api/authApi";
-import { userApi } from "../../services/api/userApi";
 import { cn } from "../../lib/utils";
 import type { User } from "../../types";
+import { auth } from "../../config/firebase";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 export default function LoginPage() {
   const navigate = useNavigate();
   const { setUser, setLoading, isLoading } = useAuthStore();
@@ -102,48 +102,18 @@ export default function LoginPage() {
     setLoading(true);
     setErrors({});
     /* Clear any previous errors */ try {
-      /* 1. Authenticate with backend */ const tokenResponse =
-        await authApi.login(form.email, form.password);
-      /* 2. Store token in authStore IMMEDIATELY so subsequent API calls use it */ const {
-        setUser: setUserInStore,
-      } = useAuthStore.getState();
-      setUserInStore(
-        {
-          id: "",
-          email: "",
-          full_name: "",
-          role: "seeker",
-          is_verified: true,
-          created_at: "",
-        },
-        tokenResponse.access_token,
-      );
-      /* 3. Fetch the authenticated user's data (now with token available in authStore) */ const userResponse =
-        await userApi.getMe();
-      /* 4. Transform API user to app User type */ const appUser: User = {
-        id: userResponse.id || userResponse._id || "",
-        email: userResponse.email,
-        full_name: userResponse.full_name || userResponse.name || "",
-        role: (userResponse.role?.toLowerCase() === "recruiter"
-          ? "recruiter"
-          : "seeker") as "seeker" | "recruiter",
-        is_verified: true,
-        created_at: userResponse.created_at || new Date().toISOString(),
-      };
-      /* 5. Update with real user data */ setUser(
-        appUser,
-        tokenResponse.access_token,
-      );
+      /* 1. Authenticate with Firebase */ 
+      await signInWithEmailAndPassword(auth, form.email, form.password);
+      
+      /* Firebase state listener in App.tsx will automatically handle fetching the profile and updating the store */
+      
       toast(
-        `Welcome back, ${appUser.full_name}!`,
+        `Signed in successfully!`,
         "success",
         "Sign in successful",
       );
-      /* 6. Navigate to appropriate dashboard based on backend role */ navigate(
-        appUser.role === "recruiter"
-          ? "/recruiter/dashboard"
-          : "/seeker/dashboard",
-      );
+      /* Navigation happens automatically based on auth state, or we can just redirect to dashboard root */
+      navigate("/seeker/dashboard");
     } catch (err: any) {
       console.error("Login error:", err);
       /* Log for debugging */ /* Determine error type and show appropriate clean message */ let errorMessage =
@@ -174,36 +144,8 @@ export default function LoginPage() {
   const handleDemoSeeker = async () => {
     try {
       setLoading(true);
-      const tokenResponse = await authApi.login(
-        "test@example.com",
-        "password123",
-      );
-      /* Store token FIRST so userApi.getMe() can use it */ const {
-        setUser: setUserInStore,
-      } = useAuthStore.getState();
-      setUserInStore(
-        {
-          id: "",
-          email: "",
-          full_name: "",
-          role: "seeker",
-          is_verified: true,
-          created_at: "",
-        },
-        tokenResponse.access_token,
-      );
-      const userResponse = await userApi.getMe();
-      const appUser: User = {
-        id: userResponse.id || userResponse._id || "",
-        email: userResponse.email,
-        full_name: userResponse.full_name || userResponse.name || "",
-        role: (userResponse.role?.toLowerCase() === "recruiter"
-          ? "recruiter"
-          : "seeker") as "seeker" | "recruiter",
-        is_verified: true,
-        created_at: userResponse.created_at || new Date().toISOString(),
-      };
-      setUser(appUser, tokenResponse.access_token);
+      await signInWithEmailAndPassword(auth, "test@example.com", "password123");
+      toast("Demo seeker login successful!", "success");
       navigate("/seeker/dashboard");
     } catch (error) {
       toast("Demo login failed", "error");
@@ -214,36 +156,8 @@ export default function LoginPage() {
   const handleDemoRecruiter = async () => {
     try {
       setLoading(true);
-      const tokenResponse = await authApi.login(
-        "recruiter@example.com",
-        "recruiter123",
-      );
-      /* Store token FIRST so userApi.getMe() can use it */ const {
-        setUser: setUserInStore,
-      } = useAuthStore.getState();
-      setUserInStore(
-        {
-          id: "",
-          email: "",
-          full_name: "",
-          role: "recruiter",
-          is_verified: true,
-          created_at: "",
-        },
-        tokenResponse.access_token,
-      );
-      const userResponse = await userApi.getMe();
-      const appUser: User = {
-        id: userResponse.id || userResponse._id || "",
-        email: userResponse.email,
-        full_name: userResponse.full_name || userResponse.name || "",
-        role: (userResponse.role?.toLowerCase() === "recruiter"
-          ? "recruiter"
-          : "seeker") as "seeker" | "recruiter",
-        is_verified: true,
-        created_at: userResponse.created_at || new Date().toISOString(),
-      };
-      setUser(appUser, tokenResponse.access_token);
+      await signInWithEmailAndPassword(auth, "recruiter@example.com", "recruiter123");
+      toast("Demo recruiter login successful!", "success");
       navigate("/recruiter/dashboard");
     } catch (error) {
       toast("Demo login failed", "error");
@@ -253,42 +167,28 @@ export default function LoginPage() {
   };
   const handleGoogleOAuth = async () => {
     try {
-      const { auth_url } = await authApi.getGoogleAuthUrl();
-      /* Redirect to Google authorization page */ window.location.href =
-        auth_url;
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      navigate("/seeker/dashboard");
     } catch (err: any) {
       console.error("Google OAuth error:", err);
-      if (
-        err?.error?.status === 503 ||
-        err?.error?.message?.includes("not configured")
-      ) {
-        toast("Google sign-in is not configured yet", "info");
-      } else {
-        toast(
-          "Google sign-in could not be completed. Please try again.",
-          "error",
-        );
-      }
+      toast(
+        "Google sign-in could not be completed. Please try again.",
+        "error",
+      );
     }
   };
   const handleGitHubOAuth = async () => {
     try {
-      const { auth_url } = await authApi.getGitHubAuthUrl();
-      /* Redirect to GitHub authorization page */ window.location.href =
-        auth_url;
+      const provider = new GithubAuthProvider();
+      await signInWithPopup(auth, provider);
+      navigate("/seeker/dashboard");
     } catch (err: any) {
       console.error("GitHub OAuth error:", err);
-      if (
-        err?.error?.status === 503 ||
-        err?.error?.message?.includes("not configured")
-      ) {
-        toast("GitHub sign-in is not configured yet", "info");
-      } else {
-        toast(
-          "GitHub sign-in could not be completed. Please try again.",
-          "error",
-        );
-      }
+      toast(
+        "GitHub sign-in could not be completed. Please try again.",
+        "error",
+      );
     }
   };
   return (
